@@ -4,6 +4,9 @@
     const STORAGE_KEY = 'dnd-bot-theme';
     const DARK_THEME = 'dark';
     const LIGHT_THEME = 'light';
+    const DARK_SWITCH_DELAY_MS = 250;
+    let isThemeTransitioning = false;
+    let themeTransitionTimeoutId = null;
     
     // Initialize theme on page load
     function initializeTheme() {
@@ -38,10 +41,32 @@
     
     // Toggle between light and dark
     function toggleTheme() {
+        if (isThemeTransitioning) {
+            clearTimeout(themeTransitionTimeoutId);
+            themeTransitionTimeoutId = null;
+            isThemeTransitioning = false;
+            setThemeProgress(0);
+            updateToggleButton();
+            return;
+        }
+
         const current = getCurrentTheme();
         const next = current === DARK_THEME ? LIGHT_THEME : DARK_THEME;
-        setTheme(next);
+        isThemeTransitioning = true;
+        setThemeProgress(0);
         updateToggleButton();
+
+        requestAnimationFrame(() => {
+            setThemeProgress(1);
+        });
+
+        themeTransitionTimeoutId = setTimeout(() => {
+            setTheme(next);
+            themeTransitionTimeoutId = null;
+            setThemeProgress(0);
+            updateToggleButton();
+            isThemeTransitioning = false;
+        }, DARK_SWITCH_DELAY_MS);
     }
     
     // Update button text/icon
@@ -49,7 +74,17 @@
         const button = document.getElementById('theme-toggle-btn');
         if (button) {
             const current = getCurrentTheme();
-            button.textContent = current === DARK_THEME ? '☀️ Light' : '🌙 Dark';
+            button.textContent = current === DARK_THEME ? '☀️' : '🌙';
+            button.setAttribute('aria-label', current === DARK_THEME ? 'Switch to light mode' : 'Switch to dark mode');
+            button.title = current === DARK_THEME ? 'Switch to light mode' : 'Switch to dark mode';
+        }
+    }
+
+    function setThemeProgress(value) {
+        const button = document.getElementById('theme-toggle-btn');
+        if (button) {
+            button.style.setProperty('--theme-progress', String(value));
+            button.setAttribute('aria-busy', value > 0 ? 'true' : 'false');
         }
     }
     

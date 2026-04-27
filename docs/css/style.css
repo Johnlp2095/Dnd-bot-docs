@@ -64,6 +64,11 @@ nav ul {
     gap: 2rem;
 }
 
+nav ul li {
+    display: flex;
+    align-items: center;
+}
+
 nav a {
     color: white;
     text-decoration: none;
@@ -854,19 +859,45 @@ html {
     background: none;
     border: 2px solid var(--secondary);
     color: var(--secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+    padding: 0;
+    border-radius: 0.6rem;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    transition: all 0.3s ease;
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    min-height: 3.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     margin-left: 1rem;
 }
 
 .theme-toggle:hover {
     background: var(--secondary);
     color: white;
-    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0.22rem;
+    background: currentColor;
+    opacity: 0.35;
+    transform: scaleX(var(--theme-progress, 0));
+    transform-origin: left center;
+    transition: transform 0.25s linear;
 }
 
 /* Forced Light Mode */
@@ -1237,7 +1268,7 @@ input:focus {
 }
 
 /* Better Button Styling */
-button {
+button:not(.theme-toggle) {
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 4px;
@@ -1248,13 +1279,13 @@ button {
     transition: all 0.3s;
 }
 
-button:hover {
+button:not(.theme-toggle):hover {
     background: var(--accent);
     transform: translateY(-2px);
     box-shadow: var(--shadow);
 }
 
-button:active {
+button:not(.theme-toggle):active {
     transform: translateY(0);
 }
 
