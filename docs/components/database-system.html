@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database System - D&D Bot Toolkit Documentation</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="../index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#components">Components</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>💾 Database System Component</h1>
+            <p>Save and load characters to JSON files for persistent storage</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section>
+                <h2>Overview</h2>
+                <p>The Database System handles character persistence by saving character data to JSON files and loading them back. This allows players to save progress between sessions.</p>
+
+                <div class="alert alert-info">
+                    <strong>📖 What Gets Saved:</strong>
+                    <ul>
+                        <li>Character name and class</li>
+                        <li>All ability scores</li>
+                        <li>Current and max HP</li>
+                        <li>Armor class and proficiency</li>
+                        <li>Experience points</li>
+                        <li>Spells known</li>
+                        <li>Inventory items</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Core Methods</h2>
+
+                <div class="method">
+                    <h4>__init__(save_folder="characters")</h4>
+                    <p>Initialize the character manager with a folder for storing files.</p>
+                    
+                    <div class="method-signature">
+                        CharacterManager(save_folder: str = "characters")
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre># Use default folder
+manager = CharacterManager()
+
+# Use custom folder
+manager = CharacterManager("my_characters")
+
+# Use guild-specific folder
+manager = CharacterManager(f"characters_guild_{guild_id}")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>save_character(character)</h4>
+                    <p>Save a character to a JSON file in the save folder.</p>
+                    
+                    <div class="method-signature">
+                        manager.save_character(character: Character)
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>manager = CharacterManager()
+hero = Character("Aragorn", "player1", "Ranger", level=5)
+
+# Modify character
+hero.abilities["strength"] = 16
+hero.armor_class = 15
+
+# Save to file
+manager.save_character(hero)
+print("Saved!")  # Creates: characters/aragorn.json</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related:</h4>
+                        <ul>
+                            <li><a href="character-system.html#to_dict">Character.to_dict()</a> - Converts character to dict</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>load_character(character_name)</h4>
+                    <p>Load a character from a JSON file.</p>
+                    
+                    <div class="method-signature">
+                        manager.load_character(character_name: str) → Character or None
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>Character:</strong> Loaded character object<br>
+                        <strong>None:</strong> If character file not found
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>manager = CharacterManager()
+
+# Load a saved character
+hero = manager.load_character("Aragorn")
+
+if hero:
+    print(f"Loaded {hero.name}")
+    print(f"Level {hero.level} {hero.char_class}")
+    print(f"HP: {hero.current_hp}/{hero.max_hp}")
+else:
+    print("Character not found")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>get_all_characters()</h4>
+                    <p>Get a list of all saved character names.</p>
+                    
+                    <div class="method-signature">
+                        manager.get_all_characters() → list
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>list:</strong> List of character names (without .json extension)
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>manager = CharacterManager()
+
+# Get all saved characters
+characters = manager.get_all_characters()
+
+print(f"Saved characters: {characters}")
+# Output: Saved characters: ['aragorn', 'gandalf', 'legolas']
+
+# Display them
+for char_name in characters:
+    char = manager.load_character(char_name)
+    print(f"  {char.name} (Level {char.level} {char.char_class})")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>delete_character(character_name)</h4>
+                    <p>Delete a saved character file.</p>
+                    
+                    <div class="method-signature">
+                        manager.delete_character(character_name: str) → bool
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>bool:</strong> True if deleted, False if file not found
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>manager = CharacterManager()
+
+if manager.delete_character("OldCharacter"):
+    print("Character deleted")
+else:
+    print("Character not found")</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>File Format (JSON)</h2>
+                <p>Characters are saved as JSON files with this structure:</p>
+
+                <div class="example">
+                    <h4>Example: aragorn.json</h4>
+                    <pre>{
+  "name": "Aragorn",
+  "player_name": "player123",
+  "char_class": "Ranger",
+  "level": 5,
+  "abilities": {
+    "strength": 16,
+    "dexterity": 14,
+    "constitution": 14,
+    "intelligence": 12,
+    "wisdom": 14,
+    "charisma": 12
+  },
+  "current_hp": 10,
+  "max_hp": 10,
+  "armor_class": 15,
+  "experience": 6500,
+  "spells": ["Hunter's Mark", "Mending"],
+  "inventory": [
+    {"name": "Longsword", "quantity": 1},
+    {"name": "Bow", "quantity": 1},
+    {"name": "Arrow", "quantity": 20}
+  ]
+}</pre>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Tip:</strong> JSON files are text-based and human-readable. You can edit them directly if needed!
+                </div>
+            </section>
+
+            <section>
+                <h2>Complete Save/Load Example</h2>
+                <div class="example">
+                    <h4>Full Session Workflow:</h4>
+                    <pre>from dnd_toolkit import Character, CharacterManager
+
+# Session start: Load previous characters
+manager = CharacterManager("my_campaign")
+
+# Load existing character
+hero = manager.load_character("Aragorn")
+
+if hero:
+    print(f"Welcome back, {hero.name}!")
+    print(f"HP: {hero.current_hp}/{hero.max_hp}")
+else:
+    # Create new character
+    hero = Character("Aragorn", "player1", "Ranger", level=1)
+    hero.abilities["strength"] = 14
+    hero.abilities["dexterity"] = 16
+
+# Play session...
+hero.take_damage(5)
+hero.add_item("Gold", 50)
+hero.experience += 300
+
+# Session end: Save progress
+manager.save_character(hero)
+print(f"Saved {hero.name}!")
+
+# Load all characters for a summary
+all_chars = manager.get_all_characters()
+print(f"\nCampaign characters: {len(all_chars)}")
+for name in all_chars:
+    char = manager.load_character(name)
+    print(f"  - {char.name} (Level {char.level})")
+</pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Discord Bot Integration</h2>
+                <div class="example">
+                    <h4>Bot Commands with Database:</h4>
+                    <pre>import discord
+from discord.ext import commands
+from dnd_toolkit import Character, CharacterManager
+
+bot = commands.Bot(command_prefix="!")
+managers = {}  # One per guild
+
+def get_manager(guild_id):
+    if guild_id not in managers:
+        managers[guild_id] = CharacterManager(f"characters_{guild_id}")
+    return managers[guild_id]
+
+@bot.command(name="save")
+async def save_char(ctx, *, char_name):
+    """Save your character"""
+    manager = get_manager(ctx.guild.id)
+    
+    # Get character (from game state)
+    char = active_characters.get(ctx.author.id)
+    
+    if char:
+        manager.save_character(char)
+        await ctx.send(f"Saved {char.name}!")
+    else:
+        await ctx.send("No active character to save")
+
+@bot.command(name="load")
+async def load_char(ctx, *, char_name):
+    """Load a saved character"""
+    manager = get_manager(ctx.guild.id)
+    
+    char = manager.load_character(char_name)
+    if char:
+        active_characters[ctx.author.id] = char
+        await ctx.send(char.display_stats())
+    else:
+        await ctx.send(f"Character '{char_name}' not found")
+
+@bot.command(name="characters")
+async def list_chars(ctx):
+    """List all saved characters"""
+    manager = get_manager(ctx.guild.id)
+    
+    chars = manager.get_all_characters()
+    if chars:
+        msg = "**Saved Characters:**\n"
+        for name in chars:
+            char = manager.load_character(name)
+            msg += f"  • {char.name} (Level {char.level} {char.char_class})\n"
+        await ctx.send(msg)
+    else:
+        await ctx.send("No saved characters yet")</pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Related Components</h2>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Character System</h3>
+                        <p>Characters being saved and loaded</p>
+                        <a href="character-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Combat System</h3>
+                        <p>Save character progress after combat</p>
+                        <a href="combat-system.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="../index.html">← Back to Home</a></li>
+                    <li><a href="spell-system.html">← Spell System</a></li>
+                    <li><a href="game-rules.html">Next: Game Rules →</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>

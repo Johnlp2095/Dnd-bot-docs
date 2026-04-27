@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Guide - D&D Bot Toolkit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .guide-card {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-left-color: var(--accent);
+        }
+
+        .guide-card h3 {
+            margin-top: 0;
+            color: var(--secondary);
+        }
+
+        .guide-card p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .guide-card a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .guide-card a:hover {
+            background: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .quick-start {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .quick-start h2 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+
+        .quick-start ol {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin-left: 0;
+        }
+
+        .quick-start li {
+            counter-increment: step-counter;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .quick-start li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(255,255,255,0.3);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-item {
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .comparison-item.do {
+            background: #d4edda;
+            border-left-color: var(--success);
+        }
+
+        .comparison-item.dont {
+            background: #f8d7da;
+            border-left-color: var(--accent);
+        }
+
+        .comparison-item h4 {
+            margin-top: 0;
+        }
+
+        .comparison-item.do h4 {
+            color: #155724;
+        }
+
+        .comparison-item.dont h4 {
+            color: #721c24;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+        }
+
+        .faq {
+            margin: 2rem 0;
+        }
+
+        .faq-item {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .faq-question::after {
+            content: "▼";
+            transition: transform 0.3s;
+        }
+
+        .faq-item.open .faq-question::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.open .faq-question {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            background: white;
+            display: none;
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#components">Components</a></li>
+                <li><a href="search-index.html">🔍 Search Index</a></li>
+                <li><a href="guide.html">Help & Guide</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>📚 Documentation Guide</h1>
+            <p>Learn how to use this documentation and find what you need</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Quick Start -->
+            <section class="quick-start">
+                <h2>🚀 Getting Started in 5 Steps</h2>
+                <ol>
+                    <li><strong>Start on the <a href="index.html" style="color: white; text-decoration: underline;">Home Page</a></strong> to see all 6 components</li>
+                    <li><strong>Choose a component</strong> based on what you want to learn (Dice Roller, Character System, etc.)</li>
+                    <li><strong>Review the Methods</strong> section to see what functions are available</li>
+                    <li><strong>Check the Examples</strong> to see real code usage</li>
+                    <li><strong>Use the Search Index</strong> to quickly find specific keywords or methods</li>
+                </ol>
+            </section>
+
+            <!-- How to Navigate -->
+            <section>
+                <h2>🗺️ How to Navigate</h2>
+                <div class="guide-grid">
+                    <div class="guide-card">
+                        <h3>🎲 Home Page</h3>
+                        <p>Overview of all 6 components. Click any component card to access its detailed documentation with methods, parameters, and examples.</p>
+                        <a href="index.html">Go to Home →</a>
+                    </div>
+
+                    <div class="guide-card">
+                        <h3>🔍 Search Index</h3>
+                        <p>Browse every keyword, method, and parameter. Use Ctrl+F to search or type in the filter box. Perfect for quick lookups.</p>
+                        <a href="search-index.html">Go to Search →</a>
+                    </div>
+
+                    <div class="guide-card">
+                        <h3>📖 Component Pages</h3>
+                        <p>Deep-dive into each component with full documentation, code examples, and cross-references to related systems.</p>
+                        <a href="index.html#components">Browse Components →</a>
+                    </div>
+
+                    <div class="guide-card">
+                        <h3>💡 Cross-References</h3>
+                        <p>Every method links to related components. Follow the connection chains to understand how systems work together.</p>
+                        <a href="search-index.html">Explore Connections →</a>
+                    </div>
+
+                    <div class="guide-card">
+                        <h3>📚 Code Examples</h3>
+                        <p>Each method includes practical examples. Copy-paste ready code that shows exactly how to use each function.</p>
+                        <a href="index.html">View Examples →</a>
+                    </div>
+
+                    <div class="guide-card">
+                        <h3>🎯 Quick Start Guide</h3>
+                        <p>This guide! Learn tips and tricks for getting the most out of the documentation.</p>
+                        <a href="guide.html">You're Here! 👈</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Showcase -->
+            <section>
+                <h2>✨ Documentation Features</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🔍</div>
+                        <div>
+                            <strong>Searchable Index</strong>
+                            <p>Find any keyword instantly</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📖</div>
+                        <div>
+                            <strong>Complete Examples</strong>
+                            <p>Real code you can copy</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔗</div>
+                        <div>
+                            <strong>Cross-References</strong>
+                            <p>Links between related methods</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌙</div>
+                        <div>
+                            <strong>Dark Mode</strong>
+                            <p>Auto-adapts to system theme</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <div>
+                            <strong>Mobile Friendly</strong>
+                            <p>Works on all devices</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <div>
+                            <strong>Fast Loading</strong>
+                            <p>GitHub Pages hosted</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search Tips -->
+            <section>
+                <h2>🎯 Pro Search Tips</h2>
+                <div class="comparison">
+                    <div class="comparison-item do">
+                        <h4>✅ Good Search Strategies</h4>
+                        <ul>
+                            <li>Use <strong>Ctrl+F</strong> for browser search</li>
+                            <li>Search for <strong>method names</strong> like "make_attack"</li>
+                            <li>Search for <strong>component names</strong></li>
+                            <li>Try <strong>keywords</strong> like "damage" or "initiative"</li>
+                            <li>Search for <strong>parameter names</strong></li>
+                        </ul>
+                    </div>
+                    <div class="comparison-item dont">
+                        <h4>❌ Ineffective Searches</h4>
+                        <ul>
+                            <li>Very generic terms like "the" or "a"</li>
+                            <li>Typos in method names</li>
+                            <li>Using spaces in method names (use underscores)</li>
+                            <li>Case-sensitive searches (search is case-insensitive)</li>
+                            <li>Partial words without context</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Component Overview -->
+            <section>
+                <h2>🎲 Component Overview</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Purpose</th>
+                            <th>Key Methods</th>
+                            <th>Use When</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>🎲 Dice Roller</strong></td>
+                            <td>All randomness in D&D</td>
+                            <td>roll_dice(), roll_advantage(), roll_disadvantage()</td>
+                            <td>Need any kind of roll</td>
+                        </tr>
+                        <tr>
+                            <td><strong>👤 Character System</strong></td>
+                            <td>Create and manage characters</td>
+                            <td>create_character(), apply_damage(), add_item()</td>
+                            <td>Working with player/monster data</td>
+                        </tr>
+                        <tr>
+                            <td><strong>⚔️ Combat System</strong></td>
+                            <td>Turn-based battles</td>
+                            <td>initialize_combat(), make_attack(), end_turn()</td>
+                            <td>Running combat encounters</td>
+                        </tr>
+                        <tr>
+                            <td><strong>✨ Spell System</strong></td>
+                            <td>Spellcasting and magic</td>
+                            <td>cast_spell(), add_spell(), replenish_slots()</td>
+                            <td>Casting spells or managing magic</td>
+                        </tr>
+                        <tr>
+                            <td><strong>💾 Database System</strong></td>
+                            <td>Save/load characters</td>
+                            <td>save_character(), load_character(), list_all_characters()</td>
+                            <td>Persisting character data</td>
+                        </tr>
+                        <tr>
+                            <td><strong>📖 Game Rules</strong></td>
+                            <td>D&D calculations</td>
+                            <td>proficiency_bonus(), experience_to_level(), calculate_ac()</td>
+                            <td>Calculating D&D mechanics</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- FAQ -->
+            <section>
+                <h2>❓ Frequently Asked Questions</h2>
+                <div class="faq">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>How do I find a specific method?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Use the <a href="search-index.html">Search Index</a> page and press Ctrl+F to search, or type in the search box at the top to filter results. Methods are marked with a green "Method" badge for easy identification.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>Where can I see code examples?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Every method on the component pages includes an "Example" section with working Python code. The examples are formatted with syntax highlighting and ready to copy-paste into your project.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>What if I need to use multiple components?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Each component page includes a "Related Components" section showing how it connects to other systems. Follow the cross-reference links to understand the full workflow. For example, Combat System uses Dice Roller and Character System.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>Is there a keyboard shortcut for searching?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Use <strong>Ctrl+F</strong> (or Cmd+F on Mac) to open your browser's built-in search. This is the fastest way to find keywords on any page. The search index page also has a filter box for additional filtering options.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>What does the cross-reference section mean?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Cross-references show which other methods or components are related to the current one. For example, "make_attack()" method links to both "Dice Roller" (for rolling attacks) and "Character System" (for the target character). Click these links to learn more.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>Can I use this documentation offline?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Since this is hosted on GitHub Pages, you can clone the repository and open the HTML files directly in your browser. All styles and functionality work without an internet connection.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span><strong>What if I find an error in the documentation?</strong></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>This is a student project! If you find errors, you can submit an issue on GitHub. Documentation is maintained as part of the toolkit's lifecycle and improvements are always welcome.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section>
+                <h2>🏆 Best Practices</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                    <div class="note">
+                        <strong>Read Complete Method Signatures</strong>
+                        <p>Always check the full method signature (like the parameters and return type) before using a method. This is usually shown in a gray code box.</p>
+                    </div>
+
+                    <div class="tip">
+                        <strong>Follow Code Examples</strong>
+                        <p>Every method has working examples. These show you the exact syntax and expected results. Use them as a template for your code.</p>
+                    </div>
+
+                    <div class="note">
+                        <strong>Check Related Components</strong>
+                        <p>When learning a method, check its related components to understand how it fits into the bigger picture. This prevents integration issues later.</p>
+                    </div>
+
+                    <div class="tip">
+                        <strong>Use the Search Index</strong>
+                        <p>The search index is your fastest route to finding specific keywords, parameters, or methods. Bookmark it or keep it in a tab.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Keyboard Shortcuts -->
+            <section>
+                <h2>⌨️ Keyboard Shortcuts</h2>
+                <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Shortcut</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Ctrl+F</strong> (Cmd+F Mac)</td>
+                            <td>Open browser search - find any text on the page</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Home</strong></td>
+                            <td>Jump to top of page</td>
+                        </tr>
+                        <tr>
+                            <td><strong>End</strong></td>
+                            <td>Jump to bottom of page</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Page Up/Down</strong></td>
+                            <td>Scroll up or down one page</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Quick Links -->
+            <section id="help" style="background: var(--secondary); color: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+                <h2 style="color: white; border-color: rgba(255,255,255,0.3);">🚀 Jump to Components</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <a href="components/dice-roller.html" style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px; color: white; text-decoration: none; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">🎲 Dice Roller</a>
+                    <a href="components/character-system.html" style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px; color: white; text-decoration: none; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">👤 Character System</a>
+                    <a href="components/combat-system.html" style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px; color: white; text-decoration: none; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">⚔️ Combat System</a>
+                    <a href="components/spell-system.html" style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px; color: white; text-decoration: none; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">✨ Spell System</a>
+                    <a href="components/database-system.html" style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px; color: white; text-decoration: none; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">💾 Database System</a>
+                    <a href="components/game-rules.html" style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 4px; color: white; text-decoration: none; text-align: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">📖 Game Rules</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-light); margin-top: 2rem; border-top: 2px solid var(--border);">
+        <p>D&D Bot Toolkit Documentation | A-Level Project | Built with ❤️ for GitHub Pages</p>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>

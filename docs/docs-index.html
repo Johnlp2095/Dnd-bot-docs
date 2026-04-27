@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Index - D&D Bot Toolkit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .doc-index {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .doc-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .doc-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .doc-header {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .doc-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .doc-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-body {
+            padding: 2rem;
+        }
+
+        .doc-desc {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .doc-features {
+            list-style: none;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .doc-features li {
+            padding: 0.25rem 0;
+            color: var(--text-dark);
+        }
+
+        .doc-features li::before {
+            content: "✓ ";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .doc-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .doc-link:hover {
+            background: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .file-tree {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            line-height: 1.8;
+        }
+
+        .file-tree code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .features-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-tile {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .feature-tile:hover {
+            border-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .feature-tile-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-tile strong {
+            display: block;
+            color: var(--secondary);
+            margin-top: 0.5rem;
+        }
+
+        .checklist {
+            display: grid;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+
+        .checklist-item::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .toc {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .toc-item {
+            margin: 0.75rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .toc-item a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc-item a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="search-index.html">Search</a></li>
+                <li><a href="guide.html">Guide</a></li>
+                <li><a href="quick-ref.html">Quick Ref</a></li>
+                <li><a href="docs-index.html">📑 Docs Index</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>📑 Complete Documentation Index</h1>
+            <p>Navigate all documentation pages and resources</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Statistics -->
+            <section>
+                <h2>📊 Documentation Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Main Pages</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Components</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">40+</div>
+                        <div class="stat-label">Indexed Keywords</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">28</div>
+                        <div class="stat-label">Documented Methods</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Showcase -->
+            <section>
+                <h2>✨ Documentation Features</h2>
+                <div class="features-showcase">
+                    <div class="feature-tile">
+                        <div class="feature-tile-icon">🔍</div>
+                        <p><strong>Searchable Index</strong><br>Find any keyword instantly with Ctrl+F</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="feature-tile-icon">📱</div>
+                        <p><strong>Mobile Responsive</strong><br>Works perfectly on all devices</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="feature-tile-icon">🌙</div>
+                        <p><strong>Dark Mode</strong><br>Auto-adapts to system preference</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="feature-tile-icon">⚡</div>
+                        <p><strong>Fast Loading</strong><br>Optimized for GitHub Pages</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="feature-tile-icon">📖</div>
+                        <p><strong>Complete Examples</strong><br>Working code for every method</p>
+                    </div>
+                    <div class="feature-tile">
+                        <div class="feature-tile-icon">🔗</div>
+                        <p><strong>Cross-References</strong><br>Links between related systems</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start -->
+            <section style="background: linear-gradient(135deg, var(--secondary), var(--accent)); color: white; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
+                <h2 style="color: white; border-bottom-color: rgba(255,255,255,0.3);">🚀 Quick Start</h2>
+                <p>👉 Start with the <a href="index.html" style="color: white; text-decoration: underline; font-weight: bold;">Home Page</a> to see all 6 components</p>
+                <p>🔍 Use the <a href="search-index.html" style="color: white; text-decoration: underline; font-weight: bold;">Search Index</a> to find anything</p>
+                <p>📖 Check <a href="guide.html" style="color: white; text-decoration: underline; font-weight: bold;">Guide & FAQ</a> for help</p>
+                <p>⚡ Keep <a href="quick-ref.html" style="color: white; text-decoration: underline; font-weight: bold;">Quick Reference</a> handy while coding</p>
+            </section>
+
+            <!-- Main Pages Overview -->
+            <section>
+                <h2>📚 All Documentation Pages</h2>
+                <div class="doc-index">
+                    <!-- Home -->
+                    <div class="doc-card">
+                        <div class="doc-header">
+                            <div class="doc-icon">🏠</div>
+                            <h3>Home</h3>
+                        </div>
+                        <div class="doc-body">
+                            <p class="doc-desc">Main landing page with overview of all 6 components and key features.</p>
+                            <ul class="doc-features">
+                                <li>Component overview cards</li>
+                                <li>Quick feature list</li>
+                                <li>Navigation to all sections</li>
+                            </ul>
+                            <a href="index.html" class="doc-link">Go to Home →</a>
+                        </div>
+                    </div>
+
+                    <!-- Search Index -->
+                    <div class="doc-card">
+                        <div class="doc-header">
+                            <div class="doc-icon">🔍</div>
+                            <h3>Search Index</h3>
+                        </div>
+                        <div class="doc-body">
+                            <p class="doc-desc">Browse 40+ keywords organized alphabetically. Perfect for quick lookups.</p>
+                            <ul class="doc-features">
+                                <li>40+ indexed keywords</li>
+                                <li>Filter by type (method, parameter, etc.)</li>
+                                <li>Direct links to documentation</li>
+                            </ul>
+                            <a href="search-index.html" class="doc-link">Go to Search →</a>
+                        </div>
+                    </div>
+
+                    <!-- Guide -->
+                    <div class="doc-card">
+                        <div class="doc-header">
+                            <div class="doc-icon">📖</div>
+                            <h3>Guide & FAQ</h3>
+                        </div>
+                        <div class="doc-body">
+                            <p class="doc-desc">Complete user guide with FAQ, tips, and best practices.</p>
+                            <ul class="doc-features">
+                                <li>5-step getting started guide</li>
+                                <li>Navigation tips & tricks</li>
+                                <li>Expandable FAQ section</li>
+                            </ul>
+                            <a href="guide.html" class="doc-link">Go to Guide →</a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Reference -->
+                    <div class="doc-card">
+                        <div class="doc-header">
+                            <div class="doc-icon">⚡</div>
+                            <h3>Quick Reference</h3>
+                        </div>
+                        <div class="doc-body">
+                            <p class="doc-desc">One-page reference sheet with all methods. Perfect for printing.</p>
+                            <ul class="doc-features">
+                                <li>All methods at a glance</li>
+                                <li>Print-friendly layout</li>
+                                <li>Common usage patterns</li>
+                            </ul>
+                            <a href="quick-ref.html" class="doc-link">Go to Quick Ref →</a>
+                        </div>
+                    </div>
+
+                    <!-- Documentation Index -->
+                    <div class="doc-card">
+                        <div class="doc-header">
+                            <div class="doc-icon">📑</div>
+                            <h3>Docs Index</h3>
+                        </div>
+                        <div class="doc-body">
+                            <p class="doc-desc">Complete overview of all documentation pages and resources.</p>
+                            <ul class="doc-features">
+                                <li>File structure overview</li>
+                                <li>Page descriptions</li>
+                                <li>Statistics and features</li>
+                            </ul>
+                            <a href="docs-index.html" class="doc-link">You Are Here! 👈</a>
+                        </div>
+                    </div>
+
+                    <!-- Component Pages -->
+                    <div class="doc-card">
+                        <div class="doc-header">
+                            <div class="doc-icon">🎲</div>
+                            <h3>Component Pages</h3>
+                        </div>
+                        <div class="doc-body">
+                            <p class="doc-desc">In-depth documentation for each of the 6 components.</p>
+                            <ul class="doc-features">
+                                <li>Complete method documentation</li>
+                                <li>Parameter explanations</li>
+                                <li>Working code examples</li>
+                            </ul>
+                            <a href="index.html#components" class="doc-link">Browse Components →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- File Structure -->
+            <section>
+                <h2>📁 File Structure</h2>
+                <p>The documentation is organized in the <code>docs/</code> folder:</p>
+                <div class="file-tree">
+<code>docs/
+├── index.html                    # Home page
+├── search-index.html             # Searchable keyword index
+├── guide.html                    # Guide & FAQ
+├── quick-ref.html                # Quick reference sheet
+├── docs-index.html               # This page
+├── _config.yml                   # Jekyll configuration
+├── Gemfile                       # Ruby dependencies
+├── robots.txt                    # SEO optimization
+├── sitemap.xml                   # XML sitemap
+├── DOCUMENTATION_SETUP.md        # Setup guide
+├── css/
+│   └── style.css                 # Master stylesheet
+└── components/
+    ├── dice-roller.html          # 🎲 Dice Roller
+    ├── character-system.html     # 👤 Character System
+    ├── combat-system.html        # ⚔️ Combat System
+    ├── spell-system.html         # ✨ Spell System
+    ├── database-system.html      # 💾 Database System
+    └── game-rules.html           # 📖 Game Rules</code>
+                </div>
+            </section>
+
+            <!-- Table of Contents -->
+            <section>
+                <h2>📋 Table of Contents</h2>
+                <div class="toc">
+                    <div style="column-count: 2; gap: 2rem;">
+                        <div class="toc-item"><a href="#main-pages">Main Pages</a></div>
+                        <div class="toc-item"><a href="#component-pages">Component Pages</a></div>
+                        <div class="toc-item"><a href="#configuration">Configuration Files</a></div>
+                        <div class="toc-item"><a href="#features">Key Features</a></div>
+                        <div class="toc-item"><a href="#how-to">How to Navigate</a></div>
+                        <div class="toc-item"><a href="#github-pages">GitHub Pages Setup</a></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Component Pages Overview -->
+            <section id="component-pages">
+                <h2>🎲 Component Pages (6 total)</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div class="note">
+                        <strong>🎲 Dice Roller</strong>
+                        <p>Core rolling engine for all D&D randomness. Methods for single rolls, multiple dice, advantage, and disadvantage.</p>
+                        <a href="components/dice-roller.html" style="display: inline-block; margin-top: 1rem;">View →</a>
+                    </div>
+                    <div class="note">
+                        <strong>👤 Character System</strong>
+                        <p>Create and manage D&D characters with stats, inventory, abilities, and status effects.</p>
+                        <a href="components/character-system.html" style="display: inline-block; margin-top: 1rem;">View →</a>
+                    </div>
+                    <div class="note">
+                        <strong>⚔️ Combat System</strong>
+                        <p>Turn-based combat with initiative, attacks, damage rolls, and encounter management.</p>
+                        <a href="components/combat-system.html" style="display: inline-block; margin-top: 1rem;">View →</a>
+                    </div>
+                    <div class="note">
+                        <strong>✨ Spell System</strong>
+                        <p>Manage spellcasting with damage, casting limits, spell slots, and daily resets.</p>
+                        <a href="components/spell-system.html" style="display: inline-block; margin-top: 1rem;">View →</a>
+                    </div>
+                    <div class="note">
+                        <strong>💾 Database System</strong>
+                        <p>Save and load characters to JSON files for persistent data storage and retrieval.</p>
+                        <a href="components/database-system.html" style="display: inline-block; margin-top: 1rem;">View →</a>
+                    </div>
+                    <div class="note">
+                        <strong>📖 Game Rules</strong>
+                        <p>D&D calculations including proficiency, XP tables, AC, and class-specific rules.</p>
+                        <a href="components/game-rules.html" style="display: inline-block; margin-top: 1rem;">View →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How to Use -->
+            <section id="how-to">
+                <h2>🎯 How to Use This Documentation</h2>
+                <div class="checklist">
+                    <div class="checklist-item">Start at the <a href="index.html" style="font-weight: bold;">Home Page</a> to see all components</div>
+                    <div class="checklist-item">Click a component card to read its full documentation</div>
+                    <div class="checklist-item">Use <a href="search-index.html" style="font-weight: bold;">Search Index</a> or Ctrl+F to find specific keywords</div>
+                    <div class="checklist-item">Check code examples on each method page</div>
+                    <div class="checklist-item">Follow cross-reference links to related systems</div>
+                    <div class="checklist-item">Print the <a href="quick-ref.html" style="font-weight: bold;">Quick Reference</a> for offline access</div>
+                </div>
+            </section>
+
+            <!-- GitHub Pages Info -->
+            <section id="github-pages">
+                <h2>🌐 GitHub Pages Hosting</h2>
+                <div style="background: var(--bg-light); padding: 2rem; border-radius: 8px;">
+                    <p><strong>Your documentation is hosted on GitHub Pages!</strong></p>
+                    <p>It's automatically served from the <code>docs/</code> folder in your repository.</p>
+                    
+                    <h4>Steps to Activate:</h4>
+                    <ol>
+                        <li>Push this documentation to your GitHub repository</li>
+                        <li>Go to Repository Settings → GitHub Pages</li>
+                        <li>Select: Branch = main, Folder = /docs</li>
+                        <li>Your site will be available at:<br><code>https://yourusername.github.io/dnd-bot-copilot/docs</code></li>
+                    </ol>
+
+                    <p><strong>Features Included:</strong></p>
+                    <ul style="margin-left: 2rem;">
+                        <li>✅ Automatic Jekyll builds</li>
+                        <li>✅ SEO optimization (sitemap.xml, robots.txt)</li>
+                        <li>✅ No build tools required</li>
+                        <li>✅ Custom domain support</li>
+                        <li>✅ SSL/HTTPS included</li>
+                    </ul>
+
+                    <p><a href="DOCUMENTATION_SETUP.md" style="color: var(--secondary); font-weight: bold;">See full setup guide →</a></p>
+                </div>
+            </section>
+
+            <!-- Keyboard Shortcuts -->
+            <section>
+                <h2>⌨️ Keyboard Shortcuts</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>Ctrl+F</strong>
+                        <p>Open browser search (works on any page)</p>
+                    </div>
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>Ctrl+P</strong>
+                        <p>Print page (or save as PDF)</p>
+                    </div>
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>Home/End</strong>
+                        <p>Jump to top/bottom of page</p>
+                    </div>
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>Page Up/Down</strong>
+                        <p>Scroll up or down one page</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Download Guide -->
+            <section style="background: var(--secondary); color: white; padding: 2rem; border-radius: 8px; margin-top: 2rem; text-align: center;">
+                <h2 style="color: white; border-color: rgba(255,255,255,0.3);">📚 Documentation Complete!</h2>
+                <p>Everything you need to use the D&D Bot Toolkit is available here.</p>
+                <p><a href="DOCUMENTATION_SETUP.md" style="color: white; text-decoration: underline; font-weight: bold;">📖 Read the Setup Guide</a> for GitHub Pages deployment instructions</p>
+            </section>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-light); margin-top: 2rem; border-top: 2px solid var(--border);">
+        <p>D&D Bot Toolkit Documentation | A-Level Project | Built with ❤️ for GitHub Pages</p>
+    </footer>
+</body>
+</html>

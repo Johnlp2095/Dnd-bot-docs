@@ -1,0 +1,44 @@
+# GitHub Pages Jekyll Configuration for D&D Bot Toolkit Documentation
+site:
+  title: D&D Bot Toolkit Documentation
+  description: A comprehensive wiki-style guide to building a D&D Beyond replacement with modular components
+  author: A-Level Student Project
+  url: https://yourusername.github.io/dnd-bot-copilot
+  
+# Jekyll Configuration
+theme: jekyll-theme-minimal
+plugins:
+  - jekyll-seo-tag
+  - jekyll-feed
+
+# Build Settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:pages/
+exclude:
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+
+# Collections for organized content
+collections:
+  components:
+    output: true
+    permalink: /:collection/:name
+
+# SEO Settings
+title: D&D Bot Toolkit Documentation
+description: Complete reference for the D&D Bot Toolkit - A modular system for building D&D games
+author: A-Level Project
+
+# Navigation
+header_pages:
+  - index.html
+  - search-index.html
+
+# Keep_files - preserve our custom HTML/CSS
+keep_files:
+  - css
+  - components
+  - images

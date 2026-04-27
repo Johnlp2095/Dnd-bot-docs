@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Index - D&D Bot Toolkit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .search-container {
+            background: var(--secondary);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-container input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid white;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin: 1rem 0;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            border-color: var(--accent);
+        }
+
+        .keyword-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .keyword-section:last-child {
+            border-bottom: none;
+        }
+
+        .keyword-letter {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .keywords-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .keyword-entry {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-left: 4px solid var(--secondary);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .keyword-entry:hover {
+            background: white;
+            border-left-color: var(--accent);
+            box-shadow: var(--shadow);
+            transform: translateX(5px);
+        }
+
+        .keyword-entry strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .keyword-type {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .keyword-type.method {
+            background: var(--success);
+        }
+
+        .keyword-type.parameter {
+            background: var(--accent);
+        }
+
+        .keyword-type.component {
+            background: #9b59b6;
+        }
+
+        .keyword-type.concept {
+            background: #f39c12;
+        }
+
+        .keyword-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+        }
+
+        .keyword-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .keyword-link:hover {
+            text-decoration: underline;
+            color: var(--accent);
+        }
+
+        .jump-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s, background 0.3s;
+        }
+
+        .jump-to-top.visible {
+            opacity: 1;
+        }
+
+        .jump-to-top:hover {
+            background: var(--accent);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--secondary);
+            background: white;
+            color: var(--secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .stats {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#components">Components</a></li>
+                <li><a href="search-index.html">🔍 Search Index</a></li>
+                <li><a href="guide.html">Help & Guide</a></li>
+                <li><a href="quick-ref.html">Quick Ref</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>🔍 Keyword Search Index</h1>
+            <p>Browse every method, parameter, and concept in the D&D Bot Toolkit • Use Ctrl+F to search</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Search Box -->
+            <div class="search-container">
+                <h3>Quick Search</h3>
+                <input type="text" id="searchBox" placeholder="Type a keyword to filter results (or use Ctrl+F)...">
+                <p style="font-size: 0.9rem; opacity: 0.9;">💡 Tip: Use Ctrl+F to search, or type above to filter</p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Total Keywords</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Components</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">28</div>
+                    <div class="stat-label">Methods</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">35+</div>
+                    <div class="stat-label">Parameters</div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Keywords</button>
+                <button class="filter-btn" data-filter="component">Components</button>
+                <button class="filter-btn" data-filter="method">Methods</button>
+                <button class="filter-btn" data-filter="parameter">Parameters</button>
+                <button class="filter-btn" data-filter="concept">Concepts</button>
+            </div>
+
+            <!-- A -->
+            <div class="keyword-section">
+                <div class="keyword-letter">A</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>ability_check()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Perform an ability check using a character's ability score</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="parameter">
+                        <strong>ability_scores</strong>
+                        <span class="keyword-type parameter">Parameter</span>
+                        <div class="keyword-desc">Dictionary storing STR, DEX, CON, INT, WIS, CHA</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>add_spell()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Add a spell to a character's spell list</div>
+                        <a href="components/spell-system.html" class="keyword-link">Spell System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>apply_damage()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Reduce character hit points and check for death</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>apply_status_effect()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Apply conditions like poisoned, stunned, restrained</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="concept">
+                        <strong>Advantage</strong>
+                        <span class="keyword-type concept">Concept</span>
+                        <div class="keyword-desc">Roll twice, keep higher result (opposite of disadvantage)</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B -->
+            <div class="keyword-section">
+                <div class="keyword-letter">B</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>calculate_ac()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Calculate armor class based on armor and dexterity</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>cast_spell()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Cast a spell with damage roll and spell slot consumption</div>
+                        <a href="components/spell-system.html" class="keyword-link">Spell System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>calculate_initiative()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll initiative for combat turn order</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- C -->
+            <div class="keyword-section">
+                <div class="keyword-letter">C</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="component">
+                        <strong>Character System</strong>
+                        <span class="keyword-type component">Component</span>
+                        <div class="keyword-desc">Create and manage D&D characters with stats, inventory, and effects</div>
+                        <a href="components/character-system.html" class="keyword-link">View Docs →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>check_critical()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Determine if an attack roll is a critical hit (natural 20)</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="component">
+                        <strong>Combat System</strong>
+                        <span class="keyword-type component">Component</span>
+                        <div class="keyword-desc">Turn-based combat with initiative, attacks, and damage</div>
+                        <a href="components/combat-system.html" class="keyword-link">View Docs →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="concept">
+                        <strong>Critical Hit</strong>
+                        <span class="keyword-type concept">Concept</span>
+                        <div class="keyword-desc">Attack roll of natural 20; deals double damage</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- D -->
+            <div class="keyword-section">
+                <div class="keyword-letter">D</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="component">
+                        <strong>Database System</strong>
+                        <span class="keyword-type component">Component</span>
+                        <div class="keyword-desc">Save and load characters to JSON files</div>
+                        <a href="components/database-system.html" class="keyword-link">View Docs →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>delete_character()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Remove a character from the database</div>
+                        <a href="components/database-system.html" class="keyword-link">Database System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="concept">
+                        <strong>Disadvantage</strong>
+                        <span class="keyword-type concept">Concept</span>
+                        <div class="keyword-desc">Roll twice, keep lower result (opposite of advantage)</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="component">
+                        <strong>Dice Roller</strong>
+                        <span class="keyword-type component">Component</span>
+                        <div class="keyword-desc">Core dice rolling engine for all D&D calculations</div>
+                        <a href="components/dice-roller.html" class="keyword-link">View Docs →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E -->
+            <div class="keyword-section">
+                <div class="keyword-letter">E</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>end_turn()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">End a character's turn in combat, apply duration effects</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>experience_to_level()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Calculate XP required for a specific level</div>
+                        <a href="components/game-rules.html" class="keyword-link">Game Rules →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- G -->
+            <div class="keyword-section">
+                <div class="keyword-letter">G</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="component">
+                        <strong>Game Rules</strong>
+                        <span class="keyword-type component">Component</span>
+                        <div class="keyword-desc">D&D calculations: proficiency, XP, class rules</div>
+                        <a href="components/game-rules.html" class="keyword-link">View Docs →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>get_character()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Retrieve a character from the database</div>
+                        <a href="components/database-system.html" class="keyword-link">Database System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- H -->
+            <div class="keyword-section">
+                <div class="keyword-letter">H</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="parameter">
+                        <strong>hit_points (hp)</strong>
+                        <span class="keyword-type parameter">Parameter</span>
+                        <div class="keyword-desc">Current and maximum health value</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>heal()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Restore hit points (cannot exceed maximum)</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- I -->
+            <div class="keyword-section">
+                <div class="keyword-letter">I</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="parameter">
+                        <strong>inventory</strong>
+                        <span class="keyword-type parameter">Parameter</span>
+                        <div class="keyword-desc">List of items a character carries with quantities</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>initialize_combat()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Set up a new combat encounter with participants</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- L -->
+            <div class="keyword-section">
+                <div class="keyword-letter">L</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="parameter">
+                        <strong>level</strong>
+                        <span class="keyword-type parameter">Parameter</span>
+                        <div class="keyword-desc">Character level (1-20 in D&D 5e)</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>list_all_characters()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Get a list of all characters in database</div>
+                        <a href="components/database-system.html" class="keyword-link">Database System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- M -->
+            <div class="keyword-section">
+                <div class="keyword-letter">M</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>make_attack()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll attack and check hit against target AC</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="concept">
+                        <strong>Modifier</strong>
+                        <span class="keyword-type concept">Concept</span>
+                        <div class="keyword-desc">Bonus (+) or penalty (-) applied to dice rolls</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- N -->
+            <div class="keyword-section">
+                <div class="keyword-letter">N</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="parameter">
+                        <strong>name</strong>
+                        <span class="keyword-type parameter">Parameter</span>
+                        <div class="keyword-desc">Character name/identifier</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P -->
+            <div class="keyword-section">
+                <div class="keyword-letter">P</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="concept">
+                        <strong>Proficiency Bonus</strong>
+                        <span class="keyword-type concept">Concept</span>
+                        <div class="keyword-desc">Bonus added to attack rolls and saving throws</div>
+                        <a href="components/game-rules.html" class="keyword-link">Game Rules →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>proficiency_bonus()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Calculate proficiency bonus for character level</div>
+                        <a href="components/game-rules.html" class="keyword-link">Game Rules →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- R -->
+            <div class="keyword-section">
+                <div class="keyword-letter">R</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>roll_single_die()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll a single die with specified number of sides</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>roll_dice()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll multiple dice with optional modifier</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>roll_advantage()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll with advantage (roll twice, keep higher)</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>roll_disadvantage()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll with disadvantage (roll twice, keep lower)</div>
+                        <a href="components/dice-roller.html" class="keyword-link">Dice Roller →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- S -->
+            <div class="keyword-section">
+                <div class="keyword-letter">S</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>save_character()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Save a character to JSON file</div>
+                        <a href="components/database-system.html" class="keyword-link">Database System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>saving_throw()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Roll saving throw against a difficulty class</div>
+                        <a href="components/character-system.html" class="keyword-link">Character System →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="component">
+                        <strong>Spell System</strong>
+                        <span class="keyword-type component">Component</span>
+                        <div class="keyword-desc">Manage spells, casting limits, and daily resets</div>
+                        <a href="components/spell-system.html" class="keyword-link">View Docs →</a>
+                    </div>
+                    <div class="keyword-entry" data-filter="parameter">
+                        <strong>spell_slots</strong>
+                        <span class="keyword-type parameter">Parameter</span>
+                        <div class="keyword-desc">Available spell slots by level (replenish on rest)</div>
+                        <a href="components/spell-system.html" class="keyword-link">Spell System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- T -->
+            <div class="keyword-section">
+                <div class="keyword-letter">T</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>take_action()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Perform an action in combat (attack, cast spell, etc.)</div>
+                        <a href="components/combat-system.html" class="keyword-link">Combat System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- U -->
+            <div class="keyword-section">
+                <div class="keyword-letter">U</div>
+                <div class="keywords-grid">
+                    <div class="keyword-entry" data-filter="method">
+                        <strong>update_character()</strong>
+                        <span class="keyword-type method">Method</span>
+                        <div class="keyword-desc">Update character data in database</div>
+                        <a href="components/database-system.html" class="keyword-link">Database System →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <section style="margin-top: 3rem; padding: 2rem; background: var(--bg-light); border-radius: 8px;">
+                <h2>📚 How to Use This Index</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h4>🔍 Quick Search</h4>
+                        <p>Use the search box above or press <strong>Ctrl+F</strong> in your browser to instantly find any keyword.</p>
+                    </div>
+                    <div>
+                        <h4>🏷️ Filter by Type</h4>
+                        <p>Click the filter buttons to view only Methods, Components, Parameters, or Concepts.</p>
+                    </div>
+                    <div>
+                        <h4>🔗 Click Links</h4>
+                        <p>Each keyword links directly to the relevant component documentation page.</p>
+                    </div>
+                    <div>
+                        <h4>📄 Component Pages</h4>
+                        <p>Each component has its own detailed page with examples and cross-references.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="jump-to-top" id="jumpToTop">↑</div>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-light); margin-top: 2rem; border-top: 2px solid var(--border);">
+        <p>D&D Bot Toolkit Documentation | A-Level Project | Built with ❤️ for GitHub Pages</p>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const keywordEntries = document.querySelectorAll('.keyword-entry');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filter entries
+                keywordEntries.forEach(entry => {
+                    if (filter === 'all' || entry.dataset.filter === filter) {
+                        entry.style.display = '';
+                    } else {
+                        entry.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Search box functionality
+        const searchBox = document.getElementById('searchBox');
+        searchBox.addEventListener('keyup', () => {
+            const query = searchBox.value.toLowerCase();
+            keywordEntries.forEach(entry => {
+                const text = entry.textContent.toLowerCase();
+                entry.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        // Jump to top button
+        const jumpToTop = document.getElementById('jumpToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                jumpToTop.classList.add('visible');
+            } else {
+                jumpToTop.classList.remove('visible');
+            }
+        });
+
+        jumpToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

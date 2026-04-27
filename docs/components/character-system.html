@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character System - D&D Bot Toolkit Documentation</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="../index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#components">Components</a></li>
+                <li><a href="../index.html#guide">Guide</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>👤 Character System Component</h1>
+            <p>Complete character creation and management system for D&D</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Overview -->
+            <section>
+                <h2>Overview</h2>
+                <p>The Character System is the foundation for creating and managing player characters and NPCs. It stores all character data including stats, hit points, spells, inventory, and status effects.</p>
+
+                <div class="alert alert-info">
+                    <strong>📖 Character Data:</strong>
+                    <ul>
+                        <li><strong>Abilities:</strong> Six core stats (STR, DEX, CON, INT, WIS, CHA) ranging 3-18</li>
+                        <li><strong>Hit Points:</strong> Current and maximum health</li>
+                        <li><strong>Armor Class:</strong> How hard to hit</li>
+                        <li><strong>Inventory:</strong> Equipment and items carried</li>
+                        <li><strong>Spells:</strong> Known spells and cantrips</li>
+                        <li><strong>Status Effects:</strong> Conditions like poison, stun, charm</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Character Creation -->
+            <section>
+                <h2>Creating a Character</h2>
+
+                <div class="method">
+                    <h4>__init__(name, player_name, char_class, level=1)</h4>
+                    <p>Create a new character with basic information.</p>
+                    
+                    <div class="method-signature">
+                        Character(name: str, player_name: str, char_class: str, level: int = 1)
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">name</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Character's name (e.g., "Aragorn")</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">player_name</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Discord ID or player identifier</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">char_class</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Character class: Fighter, Wizard, Rogue, Cleric, Ranger, Paladin, Barbarian, Bard, etc.</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">level</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Starting level (default: 1, max: 20)</div>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre># Create a level 5 Ranger named Aragorn
+hero = Character("Aragorn", "player_123", "Ranger", level=5)
+
+# Create a level 1 Wizard
+mage = Character("Gandalf", "player_456", "Wizard", level=1)</pre>
+                    </div>
+                </div>
+
+                <h3>Initial Character Stats</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ability</th>
+                            <th>Starting Value</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Strength</td>
+                            <td>10</td>
+                            <td>Melee damage, carrying capacity</td>
+                        </tr>
+                        <tr>
+                            <td>Dexterity</td>
+                            <td>10</td>
+                            <td>Dodge, initiative, ranged attacks</td>
+                        </tr>
+                        <tr>
+                            <td>Constitution</td>
+                            <td>10</td>
+                            <td>Health, hit points</td>
+                        </tr>
+                        <tr>
+                            <td>Intelligence</td>
+                            <td>10</td>
+                            <td>Wizard spellcasting</td>
+                        </tr>
+                        <tr>
+                            <td>Wisdom</td>
+                            <td>10</td>
+                            <td>Cleric/Druid spellcasting, perception</td>
+                        </tr>
+                        <tr>
+                            <td>Charisma</td>
+                            <td>10</td>
+                            <td>Persuasion, deception, leadership</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Core Methods -->
+            <section>
+                <h2>Core Methods</h2>
+
+                <!-- get_ability_modifier -->
+                <div class="method">
+                    <h4>get_ability_modifier(ability_name)</h4>
+                    <p>Calculate the modifier for a specific ability. Used in most rolls and checks.</p>
+                    
+                    <div class="method-signature">
+                        character.get_ability_modifier(ability_name: str) → int
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">ability_name</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Name of ability: "strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>int:</strong> The modifier value
+                        <ul>
+                            <li>Score 10-11 → Modifier 0</li>
+                            <li>Score 12-13 → Modifier +1</li>
+                            <li>Score 14-15 → Modifier +2</li>
+                            <li>Score 16-17 → Modifier +3</li>
+                            <li>Score 18-19 → Modifier +4</li>
+                        </ul>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger")
+hero.abilities["strength"] = 16
+
+# Get strength modifier
+str_mod = hero.get_ability_modifier("strength")
+print(f"Strength modifier: +{str_mod}")  # Output: Strength modifier: +3
+
+# Use in attack roll
+attack_roll = DiceRoller.roll_dice(1, 20, str_mod)</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Used In:</h4>
+                        <ul>
+                            <li><a href="combat-system.html">Combat System</a> - For attack calculations</li>
+                            <li><a href="dice-roller.html">Dice Roller</a> - Adding to roll modifiers</li>
+                            <li><a href="game-rules.html">Game Rules</a> - For proficiency calculations</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- take_damage -->
+                <div class="method">
+                    <h4>take_damage(damage)</h4>
+                    <p>Reduce character's HP when taking damage. Character dies if HP reaches 0.</p>
+                    
+                    <div class="method-signature">
+                        character.take_damage(damage: int) → bool
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">damage</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Amount of damage to apply</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>bool:</strong> True if character survives, False if defeated (HP ≤ 0)
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger")
+print(f"HP: {hero.current_hp}/{hero.max_hp}")  # HP: 10/10
+
+# Take 5 damage
+is_alive = hero.take_damage(5)
+print(f"HP: {hero.current_hp}/{hero.max_hp}")  # HP: 5/10
+print(f"Alive: {is_alive}")  # Alive: True
+
+# Take lethal damage
+is_alive = hero.take_damage(10)
+print(f"HP: {hero.current_hp}/{hero.max_hp}")  # HP: 0/10
+print(f"Alive: {is_alive}")  # Alive: False</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related Methods:</h4>
+                        <ul>
+                            <li><a href="#heal">heal()</a> - Restore HP</li>
+                            <li><a href="combat-system.html">Combat System</a> - Calls take_damage on targets</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- heal -->
+                <div class="method" id="heal">
+                    <h4>heal(amount)</h4>
+                    <p>Restore hit points. Cannot exceed maximum HP.</p>
+                    
+                    <div class="method-signature">
+                        character.heal(amount: int)
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">amount</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">HP to restore (e.g., from a potion or healing spell)</div>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger")
+hero.current_hp = 3
+
+# Use a healing potion
+hero.heal(5)
+print(f"HP: {hero.current_hp}/{hero.max_hp}")  # HP: 8/10
+
+# Try to over-heal (only restores to max)
+hero.heal(10)
+print(f"HP: {hero.current_hp}/{hero.max_hp}")  # HP: 10/10</pre>
+                    </div>
+                </div>
+
+                <!-- add_spell -->
+                <div class="method">
+                    <h4>add_spell(spell_name)</h4>
+                    <p>Add a known spell to the character's spell list.</p>
+                    
+                    <div class="method-signature">
+                        character.add_spell(spell_name: str)
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">spell_name</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Name of the spell to learn</div>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>mage = Character("Gandalf", "player456", "Wizard", level=5)
+
+# Add spells to the wizard
+mage.add_spell("Fireball")
+mage.add_spell("Magic Missile")
+mage.add_spell("Mending")
+
+print(f"Spells: {mage.spells}")
+# Output: Spells: ['Fireball', 'Magic Missile', 'Mending']</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related:</h4>
+                        <ul>
+                            <li><a href="spell-system.html">Spell System</a> - Full spell management</li>
+                            <li><a href="combat-system.html#perform_spell_attack">Combat System spell attacks</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- add_item -->
+                <div class="method">
+                    <h4>add_item(item_name, quantity=1)</h4>
+                    <p>Add an item to the character's inventory.</p>
+                    
+                    <div class="method-signature">
+                        character.add_item(item_name: str, quantity: int = 1)
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">item_name</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Name of item to add</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">quantity</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">How many of this item (default: 1)</div>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger")
+
+# Add equipment
+hero.add_item("Sword")
+hero.add_item("Bow")
+hero.add_item("Arrow", 20)
+hero.add_item("Healing Potion", 3)
+
+print(hero.inventory)
+# Output: [
+#   {'name': 'Sword', 'quantity': 1},
+#   {'name': 'Bow', 'quantity': 1},
+#   {'name': 'Arrow', 'quantity': 20},
+#   {'name': 'Healing Potion', 'quantity': 3}
+# ]</pre>
+                    </div>
+                </div>
+
+                <!-- Status Effects -->
+                <div class="method">
+                    <h4>add_status_effect(effect_name) / remove_status_effect(effect_name)</h4>
+                    <p>Manage status effects like poison, stun, charm, etc.</p>
+                    
+                    <div class="method-signature">
+                        character.add_status_effect(effect_name: str)<br>
+                        character.remove_status_effect(effect_name: str)
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger")
+
+# Apply effects
+hero.add_status_effect("poisoned")
+hero.add_status_effect("blinded")
+print(hero.status_effects)  # ['poisoned', 'blinded']
+
+# Remove an effect
+hero.remove_status_effect("blinded")
+print(hero.status_effects)  # ['poisoned']</pre>
+                    </div>
+                </div>
+
+                <!-- is_alive -->
+                <div class="method">
+                    <h4>is_alive()</h4>
+                    <p>Check if character is still alive (HP > 0).</p>
+                    
+                    <div class="method-signature">
+                        character.is_alive() → bool
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger")
+
+if hero.is_alive():
+    print("Character is alive!")
+else:
+    print("Character has been defeated!")</pre>
+                    </div>
+                </div>
+
+                <!-- display_stats -->
+                <div class="method">
+                    <h4>display_stats()</h4>
+                    <p>Get a formatted character sheet for display.</p>
+                    
+                    <div class="method-signature">
+                        character.display_stats() → str
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hero = Character("Aragorn", "player1", "Ranger", level=5)
+hero.abilities["strength"] = 16
+hero.abilities["dexterity"] = 14
+
+print(hero.display_stats())
+# Output:
+# **Aragorn** (Level 5 Ranger)
+# HP: 10/10
+# AC: 10
+# 
+# Abilities:
+#   Strength: 16 (+3)
+#   Dexterity: 14 (+2)
+#   Constitution: 10 (+0)
+#   Intelligence: 10 (+0)
+#   Wisdom: 10 (+0)
+#   Charisma: 10 (+0)</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Useful For:</h4>
+                        <ul>
+                            <li>Discord bot responses</li>
+                            <li>Displaying character information</li>
+                            <li>Logging character state</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- to_dict -->
+                <div class="method">
+                    <h4>to_dict()</h4>
+                    <p>Convert character to dictionary format for saving.</p>
+                    
+                    <div class="method-signature">
+                        character.to_dict() → dict
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>dict:</strong> Contains all character information
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Used By:</h4>
+                        <ul>
+                            <li><a href="database-system.html">Database System</a> - To save characters to JSON</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Character Properties -->
+            <section>
+                <h2>Character Properties</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>name</code></td>
+                            <td>str</td>
+                            <td>Character's name</td>
+                        </tr>
+                        <tr>
+                            <td><code>player_name</code></td>
+                            <td>str</td>
+                            <td>Player ID or Discord username</td>
+                        </tr>
+                        <tr>
+                            <td><code>char_class</code></td>
+                            <td>str</td>
+                            <td>Character class (Fighter, Wizard, etc.)</td>
+                        </tr>
+                        <tr>
+                            <td><code>level</code></td>
+                            <td>int</td>
+                            <td>Character's experience level</td>
+                        </tr>
+                        <tr>
+                            <td><code>abilities</code></td>
+                            <td>dict</td>
+                            <td>Six ability scores: strength, dexterity, constitution, intelligence, wisdom, charisma</td>
+                        </tr>
+                        <tr>
+                            <td><code>current_hp</code></td>
+                            <td>int</td>
+                            <td>Current hit points</td>
+                        </tr>
+                        <tr>
+                            <td><code>max_hp</code></td>
+                            <td>int</td>
+                            <td>Maximum hit points</td>
+                        </tr>
+                        <tr>
+                            <td><code>armor_class</code></td>
+                            <td>int</td>
+                            <td>How hard to hit (default: 10)</td>
+                        </tr>
+                        <tr>
+                            <td><code>experience</code></td>
+                            <td>int</td>
+                            <td>Current experience points</td>
+                        </tr>
+                        <tr>
+                            <td><code>spells</code></td>
+                            <td>list</td>
+                            <td>Known spells</td>
+                        </tr>
+                        <tr>
+                            <td><code>inventory</code></td>
+                            <td>list</td>
+                            <td>Items in inventory</td>
+                        </tr>
+                        <tr>
+                            <td><code>status_effects</code></td>
+                            <td>list</td>
+                            <td>Active conditions (poison, stun, etc.)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Common Workflows -->
+            <section>
+                <h2>Common Workflows</h2>
+
+                <h3>Workflow 1: Create a Fighter</h3>
+                <div class="example">
+                    <pre>hero = Character("Conan", "player1", "Fighter", level=5)
+
+# Fighters are strong and tough
+hero.abilities["strength"] = 18
+hero.abilities["constitution"] = 16
+hero.armor_class = 16
+
+# Give them weapons
+hero.add_item("Longsword")
+hero.add_item("Shield")
+hero.add_item("Armor")
+
+print(hero.display_stats())</pre>
+                </div>
+
+                <h3>Workflow 2: Combat Scenario</h3>
+                <div class="example">
+                    <pre>player = Character("Hero", "p1", "Fighter")
+enemy = Character("Goblin", "npc1", "Rogue")
+
+# Enemy attacks player
+damage = 5
+player.take_damage(damage)
+
+if not player.is_alive():
+    print(f"{player.name} has been defeated!")
+else:
+    print(f"{player.name} HP: {player.current_hp}/{player.max_hp}")
+
+# Player gets healed
+healing_potion = 8
+player.heal(healing_potion)
+print(f"Healed! HP: {player.current_hp}/{player.max_hp}")</pre>
+                </div>
+
+                <h3>Workflow 3: Setup Wizard</h3>
+                <div class="example">
+                    <pre>wizard = Character("Gandalf", "player2", "Wizard", level=10)
+
+# Wizards are smart but fragile
+wizard.abilities["intelligence"] = 18
+wizard.abilities["dexterity"] = 12
+wizard.armor_class = 12
+
+# Add spells
+wizard.add_spell("Fireball")
+wizard.add_spell("Magic Missile")
+wizard.add_spell("Mending")
+
+# Equipment
+wizard.add_item("Staff")
+wizard.add_item("Spellbook")
+
+print(f"{wizard.name} knows: {wizard.spells}")</pre>
+                </div>
+            </section>
+
+            <!-- Related Components -->
+            <section>
+                <h2>Related Components</h2>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Combat System</h3>
+                        <p>Uses characters in battles</p>
+                        <a href="combat-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Database System</h3>
+                        <p>Saves and loads character data</p>
+                        <a href="database-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Spell System</h3>
+                        <p>Manages character spells</p>
+                        <a href="spell-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Dice Roller</h3>
+                        <p>Calculates ability modifiers</p>
+                        <a href="dice-roller.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="../index.html">← Back to Home</a></li>
+                    <li><a href="dice-roller.html">← Dice Roller</a></li>
+                    <li><a href="combat-system.html">Next: Combat System →</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation | <a href="../README.md">Project README</a></p>
+        </div>
+    </footer>
+</body>
+</html>

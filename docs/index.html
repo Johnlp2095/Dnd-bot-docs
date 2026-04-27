@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Bot Toolkit - Documentation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#components">Components</a></li>
+                <li><a href="search-index.html">🔍 Search Index</a></li>
+                <li><a href="#help">Help & Guide</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>D&D Bot Toolkit Documentation</h1>
+            <p>A comprehensive wiki-style guide to building a D&D Beyond replacement</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Welcome Section -->
+            <section>
+                <h2>Welcome to the D&D Bot Toolkit</h2>
+                <p>This documentation provides a complete reference for the D&D Bot Toolkit, a modular system for building D&D games, character management, and combat simulations.</p>
+                
+                <div class="alert alert-info">
+                    <strong>📖 How to Use This Documentation:</strong><br>
+                    Each component on the right is fully documented with methods, parameters, code examples, and cross-references to related components. Click on any component to dive deeper.
+                </div>
+
+                <h3>Key Features</h3>
+                <ul>
+                    <li>✅ <strong>Modular Design:</strong> Use individual components or connect them together</li>
+                    <li>✅ <strong>Character Management:</strong> Create, save, and load D&D characters</li>
+                    <li>✅ <strong>Combat System:</strong> Turn-based battles with initiative and damage</li>
+                    <li>✅ <strong>Dice Rolling:</strong> All standard D&D dice with modifiers</li>
+                    <li>✅ <strong>Spell System:</strong> Spellcasting with daily limits</li>
+                    <li>✅ <strong>Persistence:</strong> Save characters to JSON files</li>
+                </ul>
+            </section>
+
+            <!-- Components Section -->
+            <section id="components">
+                <h2>Components Library</h2>
+                <p>Each component below is self-contained but works together. Click on any component to see its full documentation with methods, parameters, examples, and cross-references.</p>
+
+                <div class="component-grid">
+                    <!-- Dice Roller -->
+                    <div class="component-card">
+                        <h3>🎲 Dice Roller</h3>
+                        <p>Core dice rolling engine. Roll any die, multiple dice, or with advantage/disadvantage.</p>
+                        <p><strong>Use for:</strong> Attack rolls, damage rolls, skill checks, ability rolls</p>
+                        <a href="components/dice-roller.html">View Documentation →</a>
+                    </div>
+
+                    <!-- Character System -->
+                    <div class="component-card">
+                        <h3>👤 Character System</h3>
+                        <p>Create and manage D&D characters with full stat tracking, inventory, spells, and status effects.</p>
+                        <p><strong>Use for:</strong> Player characters, NPCs, monsters</p>
+                        <a href="components/character-system.html">View Documentation →</a>
+                    </div>
+
+                    <!-- Combat System -->
+                    <div class="component-card">
+                        <h3>⚔️ Combat System</h3>
+                        <p>Turn-based combat with initiative, attack rolls, damage calculation, and spell attacks.</p>
+                        <p><strong>Use for:</strong> Battles between characters, encounter management</p>
+                        <a href="components/combat-system.html">View Documentation →</a>
+                    </div>
+
+                    <!-- Spell System -->
+                    <div class="component-card">
+                        <h3>✨ Spell System</h3>
+                        <p>Manage spells with damage, casting limits, and daily resets.</p>
+                        <p><strong>Use for:</strong> Spellcasting, magic damage, spell slots</p>
+                        <a href="components/spell-system.html">View Documentation →</a>
+                    </div>
+
+                    <!-- Database System -->
+                    <div class="component-card">
+                        <h3>💾 Database System</h3>
+                        <p>Save and load characters to JSON files for persistent data storage.</p>
+                        <p><strong>Use for:</strong> Character persistence, campaign save files</p>
+                        <a href="components/database-system.html">View Documentation →</a>
+                    </div>
+
+                    <!-- Game Rules -->
+                    <div class="component-card">
+                        <h3>📖 Game Rules</h3>
+                        <p>D&D calculations including proficiency bonuses, experience tables, and class rules.</p>
+                        <p><strong>Use for:</strong> Leveling up, proficiency, class-specific mechanics</p>
+                        <a href="components/game-rules.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start Section -->
+            <section id="guide">
+                <h2>Quick Start Guide</h2>
+
+                <h3>1. Basic Dice Roll</h3>
+                <div class="example">
+                    <h4>Example:</h4>
+                    <pre>from dnd_toolkit import DiceRoller
+
+# Roll 3d6 + 2
+result = DiceRoller.roll_dice(3, 6, 2)
+print(result["total"])  # Prints total including modifier</pre>
+                </div>
+
+                <h3>2. Create a Character</h3>
+                <div class="example">
+                    <h4>Example:</h4>
+                    <pre>from dnd_toolkit import Character
+
+# Create character
+hero = Character("Aragorn", "player_id", "Ranger", level=5)
+hero.abilities["strength"] = 16
+hero.take_damage(5)  # Apply damage
+hero.heal(10)        # Restore HP</pre>
+                </div>
+
+                <h3>3. Run Combat</h3>
+                <div class="example">
+                    <h4>Example:</h4>
+                    <pre>from dnd_toolkit import Combat
+
+# Start a battle
+combat = Combat(player, enemy)
+combat.roll_initiative()
+
+# Attack
+result = combat.perform_attack(player, enemy)
+print(f"Damage: {result['damage']}")
+
+# Next turn
+combat.next_turn()</pre>
+                </div>
+
+                <h3>4. Save a Character</h3>
+                <div class="example">
+                    <h4>Example:</h4>
+                    <pre>from dnd_toolkit import CharacterManager
+
+# Save character
+manager = CharacterManager()
+manager.save_character(hero)
+
+# Load character later
+loaded = manager.load_character("Aragorn")</pre>
+                </div>
+            </section>
+
+            <!-- Component Relationships -->
+            <section>
+                <h2>How Components Work Together</h2>
+                
+                <div class="alert alert-success">
+                    <strong>Key Insight:</strong> Components are independent but designed to work together seamlessly.
+                </div>
+
+                <h3>Example Workflow: Combat Encounter</h3>
+                <p>Here's how components combine in a typical combat scenario:</p>
+
+                <ol>
+                    <li><strong>Character System</strong> - Create player and enemy characters</li>
+                    <li><strong>Combat System</strong> - Initialize combat between them</li>
+                    <li><strong>Dice Roller</strong> - Roll d20 for initiative</li>
+                    <li><strong>Game Rules</strong> - Calculate proficiency bonuses</li>
+                    <li><strong>Combat System</strong> - Perform attacks using dice rolls</li>
+                    <li><strong>Character System</strong> - Apply damage to target</li>
+                    <li><strong>Spell System</strong> - Cast spells if needed</li>
+                    <li><strong>Database System</strong> - Save character progress</li>
+                </ol>
+
+                <div class="cross-ref">
+                    <h4>📚 See These Documentation Pages:</h4>
+                    <ul>
+                        <li><a href="components/character-system.html">Character System</a></li>
+                        <li><a href="components/combat-system.html">Combat System</a></li>
+                        <li><a href="components/dice-roller.html">Dice Roller</a></li>
+                        <li><a href="components/game-rules.html">Game Rules</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Reference Table -->
+            <section>
+                <h2>Component Reference Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Purpose</th>
+                            <th>Main Class</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="components/dice-roller.html">Dice Roller</a></td>
+                            <td>Rolling dice with modifiers</td>
+                            <td>DiceRoller</td>
+                            <td>Skill checks, attacks, damage</td>
+                        </tr>
+                        <tr>
+                            <td><a href="components/character-system.html">Character System</a></td>
+                            <td>Managing character data</td>
+                            <td>Character</td>
+                            <td>Player/NPC management</td>
+                        </tr>
+                        <tr>
+                            <td><a href="components/combat-system.html">Combat System</a></td>
+                            <td>Turn-based battles</td>
+                            <td>Combat</td>
+                            <td>Encounters, fights</td>
+                        </tr>
+                        <tr>
+                            <td><a href="components/spell-system.html">Spell System</a></td>
+                            <td>Spellcasting management</td>
+                            <td>Spell</td>
+                            <td>Magic attacks, casting</td>
+                        </tr>
+                        <tr>
+                            <td><a href="components/database-system.html">Database System</a></td>
+                            <td>Save/load characters</td>
+                            <td>CharacterManager</td>
+                            <td>Persistence, campaigns</td>
+                        </tr>
+                        <tr>
+                            <td><a href="components/game-rules.html">Game Rules</a></td>
+                            <td>D&D calculations</td>
+                            <td>GameRules</td>
+                            <td>Rules, leveling, bonuses</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Help Section -->
+            <section>
+                <h2>Need Help?</h2>
+                
+                <h3>I want to...</h3>
+                <ul>
+                    <li><strong>Roll dice:</strong> See <a href="components/dice-roller.html">Dice Roller documentation</a></li>
+                    <li><strong>Create a character:</strong> See <a href="components/character-system.html">Character System documentation</a></li>
+                    <li><strong>Run a battle:</strong> See <a href="components/combat-system.html">Combat System documentation</a></li>
+                    <li><strong>Cast a spell:</strong> See <a href="components/spell-system.html">Spell System documentation</a></li>
+                    <li><strong>Save progress:</strong> See <a href="components/database-system.html">Database System documentation</a></li>
+                    <li><strong>Look up D&D rules:</strong> See <a href="components/game-rules.html">Game Rules documentation</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation | Built for A-Level Project</p>
+            <p><a href="../README.md">← Back to Project README</a></p>
+        </div>
+    </footer>
+</body>
+</html>

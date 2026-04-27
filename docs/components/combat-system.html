@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat System - D&D Bot Toolkit Documentation</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="../index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#components">Components</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>⚔️ Combat System Component</h1>
+            <p>Turn-based combat with initiative, attacks, and spell casting</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section>
+                <h2>Overview</h2>
+                <p>The Combat System manages turn-based battles between multiple characters. It handles initiative rolls, attack calculations, damage application, and tracks combat state through multiple rounds.</p>
+
+                <div class="alert alert-info">
+                    <strong>📖 Combat Flow:</strong>
+                    <ol>
+                        <li>Initialize combat with participants</li>
+                        <li>Roll initiative for turn order</li>
+                        <li>Each turn: active character attacks</li>
+                        <li>Damage applied and HP tracked</li>
+                        <li>Next turn until combat ends</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section>
+                <h2>Core Methods</h2>
+
+                <div class="method">
+                    <h4>__init__(*characters)</h4>
+                    <p>Initialize a combat encounter with participating characters.</p>
+                    
+                    <div class="method-signature">
+                        Combat(*characters: Character)
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre># Start combat between player and enemy
+player = Character("Hero", "p1", "Fighter")
+enemy = Character("Goblin", "npc1", "Rogue")
+
+combat = Combat(player, enemy)
+
+# Or with multiple combatants
+team1 = [player1, player2]
+team2 = [enemy1, enemy2]
+combat = Combat(player1, player2, enemy1, enemy2)</pre>
+                    </div>
+                </div>
+
+                <div class="method" id="roll_initiative">
+                    <h4>roll_initiative()</h4>
+                    <p>Roll d20 + DEX modifier for each combatant to determine turn order.</p>
+                    
+                    <div class="method-signature">
+                        combat.roll_initiative() → list
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>list:</strong> List of initiative rolls sorted highest first
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>player = Character("Hero", "p1", "Fighter")
+player.abilities["dexterity"] = 14
+
+enemy = Character("Goblin", "npc1", "Rogue")
+enemy.abilities["dexterity"] = 16
+
+combat = Combat(player, enemy)
+initiative = combat.roll_initiative()
+
+for entry in initiative:
+    print(f"{entry['character'].name}: {entry['roll']}")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Uses:</h4>
+                        <ul>
+                            <li><a href="dice-roller.html">Dice Roller</a> - Rolls d20 + DEX modifier</li>
+                            <li><a href="character-system.html">Character System</a> - Gets DEX ability modifier</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method" id="perform_attack">
+                    <h4>perform_attack(attacker, defender, weapon_damage=8)</h4>
+                    <p>Perform a melee attack roll and apply damage if it hits.</p>
+                    
+                    <div class="method-signature">
+                        combat.perform_attack(attacker: Character, defender: Character, weapon_damage: int = 8) → dict
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">attacker</span>
+                            <span class="param-type">Character</span>
+                            <div class="param-desc">Character performing the attack</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">defender</span>
+                            <span class="param-type">Character</span>
+                            <div class="param-desc">Character being attacked</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">weapon_damage</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Weapon damage die (default: 8 for longsword)</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>dict:</strong> Attack result with hit/miss, damage, and HP
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>combat = Combat(player, enemy)
+combat.roll_initiative()
+
+# Player attacks
+result = combat.perform_attack(player, enemy, weapon_damage=8)
+
+if result['hit']:
+    print(f"HIT! {result['damage']} damage!")
+else:
+    print("MISS!")
+
+print(f"Enemy HP: {result['defender_hp']}/{enemy.max_hp}")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Uses:</h4>
+                        <ul>
+                            <li><a href="dice-roller.html">Dice Roller</a> - Roll d20 and damage dice</li>
+                            <li><a href="character-system.html">Character System</a> - Apply damage, get modifiers</li>
+                            <li><a href="game-rules.html">Game Rules</a> - Proficiency bonus</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method" id="perform_spell_attack">
+                    <h4>perform_spell_attack(caster, defender, spell_damage=6, spell_ability="intelligence")</h4>
+                    <p>Cast a spell that requires an attack roll and deals damage.</p>
+                    
+                    <div class="method-signature">
+                        combat.perform_spell_attack(caster, defender, spell_damage, spell_ability) → dict
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>wizard = Character("Gandalf", "p2", "Wizard")
+wizard.abilities["intelligence"] = 18
+
+combat = Combat(wizard, enemy)
+
+# Cast Fireball (2d6 damage, intelligence-based)
+result = combat.perform_spell_attack(wizard, enemy, spell_damage=6, spell_ability="intelligence")
+
+print(f"Spell Attack: {result['spell_attack']}")
+if result['hit']:
+    print(f"Damage: {result['damage']}")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related:</h4>
+                        <ul>
+                            <li><a href="spell-system.html">Spell System</a> - Full spell management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>next_turn()</h4>
+                    <p>Move to the next combatant's turn and increment round counter.</p>
+                    
+                    <div class="method-signature">
+                        combat.next_turn()
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>combat = Combat(player, enemy)
+combat.roll_initiative()
+
+# Combat round loop
+while not combat.is_combat_finished():
+    current_char = combat.get_current_combatant()
+    print(f"{current_char.name}'s turn (Round {combat.round})")
+    
+    # Perform action...
+    
+    combat.next_turn()  # Move to next character</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>get_current_combatant()</h4>
+                    <p>Get the character whose turn it currently is.</p>
+                    
+                    <div class="method-signature">
+                        combat.get_current_combatant() → Character
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>current = combat.get_current_combatant()
+print(f"It's {current.name}'s turn!")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>is_combat_finished()</h4>
+                    <p>Check if combat has ended (only one combatant alive).</p>
+                    
+                    <div class="method-signature">
+                        combat.is_combat_finished() → bool
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>bool:</strong> True if combat is over, False if still ongoing
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>if combat.is_combat_finished():
+    print("Combat has ended!")
+    # Determine victor
+    alive = [c for c in combat.characters if c.is_alive()]
+    if alive:
+        print(f"{alive[0].name} wins!")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>get_status()</h4>
+                    <p>Get formatted combat status for display.</p>
+                    
+                    <div class="method-signature">
+                        combat.get_status() → str
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>print(combat.get_status())
+# Output:
+# **Round 3** - Hero's turn
+#
+# Hero: 12/20 HP
+# Goblin: 5/8 HP</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Combat Properties</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>characters</code></td>
+                            <td>list</td>
+                            <td>All combatants in order of initiative</td>
+                        </tr>
+                        <tr>
+                            <td><code>current_turn_index</code></td>
+                            <td>int</td>
+                            <td>Index of current combatant</td>
+                        </tr>
+                        <tr>
+                            <td><code>round</code></td>
+                            <td>int</td>
+                            <td>Current round number (starts at 1)</td>
+                        </tr>
+                        <tr>
+                            <td><code>history</code></td>
+                            <td>list</td>
+                            <td>Log of all actions taken</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Complete Combat Example</h2>
+                <div class="example">
+                    <h4>Full Combat Encounter:</h4>
+                    <pre>from dnd_toolkit import Character, Combat
+
+# Create combatants
+hero = Character("Hero", "p1", "Fighter", level=3)
+hero.abilities["strength"] = 16
+hero.armor_class = 15
+
+enemy = Character("Goblin", "npc1", "Rogue", level=1)
+enemy.abilities["dexterity"] = 14
+enemy.armor_class = 13
+enemy.max_hp = 7
+enemy.current_hp = 7
+
+# Start combat
+combat = Combat(hero, enemy)
+print("Combat started!")
+
+# Roll initiative
+init = combat.roll_initiative()
+print("\nInitiative:")
+for entry in init:
+    print(f"  {entry['character'].name}: {entry['roll']}")
+
+# Run combat rounds
+round_num = 1
+while not combat.is_combat_finished():
+    print(f"\n--- Round {combat.round} ---")
+    current = combat.get_current_combatant()
+    print(f"{current.name}'s turn")
+    
+    # Determine opponent
+    opponent = combat.characters[1] if combat.characters[0] == current else combat.characters[0]
+    
+    # Perform attack
+    result = combat.perform_attack(current, opponent)
+    print(f"Attack roll: {result['attack_roll']}")
+    
+    if result['hit']:
+        print(f"HIT! {result['damage']} damage!")
+    else:
+        print("MISS!")
+    
+    print(combat.get_status())
+    
+    # End turn
+    combat.next_turn()
+
+# Determine winner
+print("\n=== Combat Finished ===")
+alive = [c for c in combat.characters if c.is_alive()]
+if alive:
+    print(f"{alive[0].name} is victorious!")</pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Related Components</h2>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Character System</h3>
+                        <p>Creates characters that participate in combat</p>
+                        <a href="character-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Dice Roller</h3>
+                        <p>Rolls for initiative and attacks</p>
+                        <a href="dice-roller.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Spell System</h3>
+                        <p>Handles spell attacks and effects</p>
+                        <a href="spell-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Game Rules</h3>
+                        <p>Provides combat modifiers and bonuses</p>
+                        <a href="game-rules.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="../index.html">← Back to Home</a></li>
+                    <li><a href="character-system.html">← Character System</a></li>
+                    <li><a href="spell-system.html">Next: Spell System →</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation | <a href="../README.md">Project README</a></p>
+        </div>
+    </footer>
+</body>
+</html>

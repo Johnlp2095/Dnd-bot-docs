@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Reference - D&D Bot Toolkit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .reference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .reference-box {
+            background: var(--bg-light);
+            border-radius: 8px;
+            overflow: hidden;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .reference-header {
+            background: var(--secondary);
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .reference-content {
+            padding: 1.5rem;
+        }
+
+        .reference-method {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-method:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .method-name {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+
+        .method-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .method-link {
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-decoration: none;
+            margin-top: 0.5rem;
+        }
+
+        .method-link:hover {
+            text-decoration: underline;
+        }
+
+        .print-friendly {
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        @media print {
+            nav, footer {
+                display: none;
+            }
+            .print-friendly {
+                break-inside: avoid;
+            }
+        }
+
+        .download-hint {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .download-hint strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .reference-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="search-index.html">Search Index</a></li>
+                <li><a href="guide.html">Guide</a></li>
+                <li><a href="quick-ref.html">Quick Ref</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>⚡ Quick Reference Sheet</h1>
+            <p>One-page method overview for all D&D Bot Toolkit components • Use Ctrl+P to print</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="download-hint">
+                <strong>💡 Tip: Press Ctrl+P to print or save as PDF</strong>
+                <p>Keep this reference handy while coding!</p>
+            </div>
+
+            <!-- Dice Roller -->
+            <div class="reference-grid">
+                <div class="reference-box">
+                    <div class="reference-header">🎲 Dice Roller</div>
+                    <div class="reference-content">
+                        <div class="reference-method">
+                            <div class="method-name">roll_single_die(sides)</div>
+                            <div class="method-desc">Roll one die with specified sides (1-20)</div>
+                            <a href="components/dice-roller.html#roll_single_die" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">roll_dice(num, sides, mod)</div>
+                            <div class="method-desc">Roll multiple dice with modifier (e.g., 3d6+2)</div>
+                            <a href="components/dice-roller.html#roll_dice" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">roll_advantage(sides)</div>
+                            <div class="method-desc">Roll twice, keep higher result</div>
+                            <a href="components/dice-roller.html#roll_advantage" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">roll_disadvantage(sides)</div>
+                            <div class="method-desc">Roll twice, keep lower result</div>
+                            <a href="components/dice-roller.html#roll_disadvantage" class="method-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character System -->
+                <div class="reference-box">
+                    <div class="reference-header">👤 Character System</div>
+                    <div class="reference-content">
+                        <div class="reference-method">
+                            <div class="method-name">create_character(name, level)</div>
+                            <div class="method-desc">Create new character with default stats</div>
+                            <a href="components/character-system.html#create_character" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">apply_damage(amount)</div>
+                            <div class="method-desc">Reduce HP, check for death</div>
+                            <a href="components/character-system.html#apply_damage" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">heal(amount)</div>
+                            <div class="method-desc">Restore HP to max of max_hp</div>
+                            <a href="components/character-system.html#heal" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">add_item(item, quantity)</div>
+                            <div class="method-desc">Add item to inventory</div>
+                            <a href="components/character-system.html#add_item" class="method-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combat System -->
+                <div class="reference-box">
+                    <div class="reference-header">⚔️ Combat System</div>
+                    <div class="reference-content">
+                        <div class="reference-method">
+                            <div class="method-name">initialize_combat(chars)</div>
+                            <div class="method-desc">Set up new combat with characters</div>
+                            <a href="components/combat-system.html#initialize_combat" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">make_attack(attacker, target)</div>
+                            <div class="method-desc">Roll attack and check hit</div>
+                            <a href="components/combat-system.html#make_attack" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">end_turn()</div>
+                            <div class="method-desc">End character's turn, apply effects</div>
+                            <a href="components/combat-system.html#end_turn" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">check_combat_end()</div>
+                            <div class="method-desc">Check if combat is finished</div>
+                            <a href="components/combat-system.html#check_combat_end" class="method-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spell System -->
+                <div class="reference-box">
+                    <div class="reference-header">✨ Spell System</div>
+                    <div class="reference-content">
+                        <div class="reference-method">
+                            <div class="method-name">add_spell(char, spell_name)</div>
+                            <div class="method-desc">Add spell to character list</div>
+                            <a href="components/spell-system.html#add_spell" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">cast_spell(char, spell_name)</div>
+                            <div class="method-desc">Cast spell and consume slot</div>
+                            <a href="components/spell-system.html#cast_spell" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">replenish_slots(char, level)</div>
+                            <div class="method-desc">Reset daily spell slots</div>
+                            <a href="components/spell-system.html#replenish_slots" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">get_spell_damage(spell)</div>
+                            <div class="method-desc">Calculate spell damage roll</div>
+                            <a href="components/spell-system.html#get_spell_damage" class="method-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database System -->
+                <div class="reference-box">
+                    <div class="reference-header">💾 Database System</div>
+                    <div class="reference-content">
+                        <div class="reference-method">
+                            <div class="method-name">save_character(char)</div>
+                            <div class="method-desc">Save character to JSON file</div>
+                            <a href="components/database-system.html#save_character" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">load_character(name)</div>
+                            <div class="method-desc">Load character from file</div>
+                            <a href="components/database-system.html#load_character" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">list_all_characters()</div>
+                            <div class="method-desc">Get list of all saved characters</div>
+                            <a href="components/database-system.html#list_all_characters" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">delete_character(name)</div>
+                            <div class="method-desc">Remove character from database</div>
+                            <a href="components/database-system.html#delete_character" class="method-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Rules -->
+                <div class="reference-box">
+                    <div class="reference-header">📖 Game Rules</div>
+                    <div class="reference-content">
+                        <div class="reference-method">
+                            <div class="method-name">proficiency_bonus(level)</div>
+                            <div class="method-desc">Calculate prof bonus (level 1-20)</div>
+                            <a href="components/game-rules.html#proficiency_bonus" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">experience_to_level(lvl)</div>
+                            <div class="method-desc">XP required to reach level</div>
+                            <a href="components/game-rules.html#experience_to_level" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">calculate_ac(char)</div>
+                            <div class="method-desc">Calculate AC from armor/DEX</div>
+                            <a href="components/game-rules.html#calculate_ac" class="method-link">View Details →</a>
+                        </div>
+                        <div class="reference-method">
+                            <div class="method-name">ability_modifier(score)</div>
+                            <div class="method-desc">Get modifier from ability score</div>
+                            <a href="components/game-rules.html#ability_modifier" class="method-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Tips -->
+            <section style="background: var(--bg-light); padding: 2rem; border-radius: 8px; margin: 2rem 0;">
+                <h2>💡 Quick Tips</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <h4>🔍 Search</h4>
+                        <p>Use <strong>Ctrl+F</strong> to search on any page</p>
+                    </div>
+                    <div>
+                        <h4>📖 Examples</h4>
+                        <p>Every method has working code examples</p>
+                    </div>
+                    <div>
+                        <h4>🔗 Links</h4>
+                        <p>Click "View Details" to see full documentation</p>
+                    </div>
+                    <div>
+                        <h4>🖨️ Print</h4>
+                        <p>Press Ctrl+P to save as PDF</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Common Patterns -->
+            <section style="background: white; padding: 2rem; border-radius: 8px; border: 2px solid var(--secondary); margin: 2rem 0;">
+                <h2>🎯 Common Usage Patterns</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                    <div class="note">
+                        <strong>Create a Character</strong>
+                        <pre style="background: var(--primary); color: #ecf0f1; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">char = create_character("Hero", 1)
+add_item(char, "Sword", 1)
+add_spell(char, "Magic Missile")</pre>
+                    </div>
+
+                    <div class="note">
+                        <strong>Combat Round</strong>
+                        <pre style="background: var(--primary); color: #ecf0f1; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">initialize_combat([hero, goblin])
+result = make_attack(hero, goblin)
+end_turn()
+check_combat_end()</pre>
+                    </div>
+
+                    <div class="note">
+                        <strong>Roll Checks</strong>
+                        <pre style="background: var(--primary); color: #ecf0f1; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">attack = roll_dice(1, 20, 5)
+damage = roll_dice(2, 6, 3)
+lucky_roll = roll_advantage(20)</pre>
+                    </div>
+
+                    <div class="note">
+                        <strong>Save Character</strong>
+                        <pre style="background: var(--primary); color: #ecf0f1; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">save_character(hero)
+all_chars = list_all_characters()
+loaded = load_character("Hero")</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Parameter Reference -->
+            <section>
+                <h2>📋 Common Parameters</h2>
+                <div style="overflow-x: auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>level</code></td>
+                                <td>int</td>
+                                <td>1-20</td>
+                                <td>Character level in D&D</td>
+                            </tr>
+                            <tr>
+                                <td><code>sides</code></td>
+                                <td>int</td>
+                                <td>4, 6, 8, 10, 12, 20</td>
+                                <td>Die size for rolling</td>
+                            </tr>
+                            <tr>
+                                <td><code>modifier</code></td>
+                                <td>int</td>
+                                <td>-5 to +20</td>
+                                <td>Bonus/penalty to rolls</td>
+                            </tr>
+                            <tr>
+                                <td><code>ability_scores</code></td>
+                                <td>dict</td>
+                                <td>{"STR": 15, "DEX": 14}</td>
+                                <td>Character stats</td>
+                            </tr>
+                            <tr>
+                                <td><code>hit_points</code></td>
+                                <td>int</td>
+                                <td>1-100+</td>
+                                <td>Current HP (max = max_hp)</td>
+                            </tr>
+                            <tr>
+                                <td><code>ac</code></td>
+                                <td>int</td>
+                                <td>10-20</td>
+                                <td>Armor Class for defense</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Return Types Reference -->
+            <section style="margin-top: 2rem;">
+                <h2>↩️ Common Return Types</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>dict</strong>
+                        <p>{"rolls": [5, 3], "total": 8, "modifier": 0}</p>
+                    </div>
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>list</strong>
+                        <p>[character1, character2, character3]</p>
+                    </div>
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>bool</strong>
+                        <p>True (hit) or False (miss)</p>
+                    </div>
+                    <div class="badge-light" style="padding: 1.5rem; border-radius: 8px;">
+                        <strong>int</strong>
+                        <p>15 (damage, AC, HP, etc.)</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-light); margin-top: 2rem; border-top: 2px solid var(--border);">
+        <p>D&D Bot Toolkit Documentation | A-Level Project | Built with ❤️ for GitHub Pages</p>
+        <p>Print Hint: Use Ctrl+P to save this as a PDF for offline reference</p>
+    </footer>
+</body>
+</html>

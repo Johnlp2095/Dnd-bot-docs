@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller - D&D Bot Toolkit Documentation</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="../index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#components">Components</a></li>
+                <li><a href="../index.html#guide">Guide</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>🎲 Dice Roller Component</h1>
+            <p>Core dice rolling engine for D&D calculations</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Overview -->
+            <section>
+                <h2>Overview</h2>
+                <p>The Dice Roller component handles all randomness in the D&D system. It supports rolling any die (d4, d6, d8, d10, d12, d20) with modifiers, advantage, and disadvantage.</p>
+
+                <div class="alert alert-info">
+                    <strong>📖 Key Concepts:</strong>
+                    <ul>
+                        <li><strong>Dice Notation:</strong> "3d6+2" means roll 3 six-sided dice and add 2</li>
+                        <li><strong>Advantage:</strong> Roll twice, take the higher result</li>
+                        <li><strong>Disadvantage:</strong> Roll twice, take the lower result</li>
+                        <li><strong>Modifier:</strong> Bonus or penalty added to the total</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Methods -->
+            <section>
+                <h2>Methods</h2>
+
+                <!-- roll_single_die -->
+                <div class="method">
+                    <h4>roll_single_die(sides)</h4>
+                    <p>Roll a single die with the specified number of sides.</p>
+                    
+                    <div class="method-signature">
+                        DiceRoller.roll_single_die(sides: int) → int
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">sides</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Number of sides on the die. Common values: 4, 6, 8, 10, 12, 20</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>int:</strong> Random number between 1 and <code>sides</code> (inclusive)
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre># Roll a d20 (1-20)
+result = DiceRoller.roll_single_die(20)
+print(f"Rolled: {result}")  # Output: Rolled: 17
+
+# Roll a d6
+result = DiceRoller.roll_single_die(6)
+print(result)  # Output: 3</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related Methods:</h4>
+                        <ul>
+                            <li><a href="#roll_dice">roll_dice()</a> - Roll multiple dice</li>
+                            <li><a href="#roll_advantage">roll_advantage()</a> - Roll with advantage</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- roll_dice -->
+                <div class="method" id="roll_dice">
+                    <h4>roll_dice(num_dice, sides, modifier=0)</h4>
+                    <p>Roll multiple dice and sum them together with an optional modifier.</p>
+                    
+                    <div class="method-signature">
+                        DiceRoller.roll_dice(num_dice: int, sides: int, modifier: int = 0) → dict
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">num_dice</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">How many dice to roll</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">sides</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Number of sides on each die</div>
+                        </div>
+                        <div class="param">
+                            <span class="param-name">modifier</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Optional bonus or penalty (default: 0)</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>dict:</strong> Dictionary containing:
+                        <ul>
+                            <li><code>"rolls"</code> - List of individual die results</li>
+                            <li><code>"total"</code> - Sum including modifier</li>
+                            <li><code>"modifier"</code> - The modifier used</li>
+                            <li><code>"notation"</code> - Standard D&D notation string (e.g., "3d6+2")</li>
+                        </ul>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example: Attack Roll</h4>
+                        <pre># Roll d20 + 5 (for an attack with +5 modifier)
+result = DiceRoller.roll_dice(1, 20, 5)
+print(f"Attack roll: {result['total']}")
+# Output: Attack roll: 19
+
+# Example output dictionary:
+# {
+#     "rolls": [14],
+#     "total": 19,
+#     "modifier": 5,
+#     "notation": "1d20+5"
+# }</pre>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example: Damage Roll</h4>
+                        <pre># Roll 2d6 + 3 (for weapon damage)
+result = DiceRoller.roll_dice(2, 6, 3)
+print(f"Damage: {result['total']}")
+# Possible output: Damage: 12
+
+# Example output dictionary:
+# {
+#     "rolls": [5, 4],
+#     "total": 12,
+#     "modifier": 3,
+#     "notation": "2d6+3"
+# }</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Used In:</h4>
+                        <ul>
+                            <li><a href="combat-system.html">Combat System</a> - For attack and damage rolls</li>
+                            <li><a href="character-system.html">Character System</a> - For ability checks</li>
+                            <li><a href="spell-system.html">Spell System</a> - For spell damage</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- roll_advantage -->
+                <div class="method" id="roll_advantage">
+                    <h4>roll_advantage(num_sides=20)</h4>
+                    <p>Roll with advantage (roll twice, take the higher result). Common in D&D 5e when conditions favor you.</p>
+                    
+                    <div class="method-signature">
+                        DiceRoller.roll_advantage(num_sides: int = 20) → tuple
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">num_sides</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Die size (default: 20 for a d20)</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>tuple:</strong> (result, [roll1, roll2])
+                        <ul>
+                            <li>First element: The highest of the two rolls</li>
+                            <li>Second element: List of both individual rolls</li>
+                        </ul>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example: Attack with Advantage</h4>
+                        <pre># You have advantage on this attack
+result, both = DiceRoller.roll_advantage()
+print(f"Advantage rolls: {both}")  # e.g., [8, 15]
+print(f"Using: {result}")          # Takes the 15
+
+# With a modifier
+strength_mod = 3
+total = result + strength_mod
+print(f"Attack total: {total}")    # 15 + 3 = 18</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related:</h4>
+                        <ul>
+                            <li><a href="#roll_disadvantage">roll_disadvantage()</a> - The opposite of advantage</li>
+                            <li><a href="combat-system.html#perform_attack">Combat System attack()</a> - Uses advantage/disadvantage</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- roll_disadvantage -->
+                <div class="method" id="roll_disadvantage">
+                    <h4>roll_disadvantage(num_sides=20)</h4>
+                    <p>Roll with disadvantage (roll twice, take the lower result). Applied when conditions work against you.</p>
+                    
+                    <div class="method-signature">
+                        DiceRoller.roll_disadvantage(num_sides: int = 20) → tuple
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">num_sides</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Die size (default: 20 for a d20)</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>tuple:</strong> (result, [roll1, roll2])
+                        <ul>
+                            <li>First element: The lowest of the two rolls</li>
+                            <li>Second element: List of both individual rolls</li>
+                        </ul>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example: Attack with Disadvantage</h4>
+                        <pre># You have disadvantage (e.g., prone)
+result, both = DiceRoller.roll_disadvantage()
+print(f"Disadvantage rolls: {both}")  # e.g., [12, 7]
+print(f"Using: {result}")             # Takes the 7
+
+# Apply strength modifier
+total = result + 3
+print(f"Attack total: {total}")       # 7 + 3 = 10</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Common Use Cases -->
+            <section>
+                <h2>Common Use Cases</h2>
+
+                <h3>Attack Roll</h3>
+                <div class="example">
+                    <pre># Fighter attacks with +4 bonus
+result = DiceRoller.roll_dice(1, 20, 4)
+if result["total"] >= enemy_ac:
+    damage = DiceRoller.roll_dice(1, 8, 3)  # Weapon damage
+    print(f"HIT! Damage: {damage['total']}")</pre>
+                </div>
+
+                <h3>Ability Check</h3>
+                <div class="example">
+                    <pre># Strength check with modifier
+strength_mod = (strength_score - 10) // 2
+result = DiceRoller.roll_dice(1, 20, strength_mod)
+print(f"You rolled: {result['total']}")</pre>
+                </div>
+
+                <h3>Initiative</h3>
+                <div class="example">
+                    <pre># Roll for who goes first
+dex_mod = 3  # Dexterity modifier
+init_roll = DiceRoller.roll_dice(1, 20, dex_mod)
+print(f"Initiative: {init_roll['total']}")</pre>
+                </div>
+
+                <h3>Saving Throw</h3>
+                <div class="example">
+                    <pre># Make a Dexterity save
+dex_save_mod = 4
+result = DiceRoller.roll_dice(1, 20, dex_save_mod)
+dc = 15  # Difficulty class
+if result["total"] >= dc:
+    print("You succeed!")
+else:
+    print("You fail!")</pre>
+                </div>
+            </section>
+
+            <!-- Related Components -->
+            <section>
+                <h2>Related Components</h2>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Combat System</h3>
+                        <p>Uses Dice Roller for all attack and damage rolls</p>
+                        <a href="combat-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Character System</h3>
+                        <p>Uses Dice Roller for ability checks and rolls</p>
+                        <a href="character-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Spell System</h3>
+                        <p>Uses Dice Roller for spell damage calculation</p>
+                        <a href="spell-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Game Rules</h3>
+                        <p>Provides D&D rules context for rolls</p>
+                        <a href="game-rules.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tips & Tricks -->
+            <section>
+                <h2>Tips & Tricks</h2>
+
+                <h3>Tip 1: Check Roll Range</h3>
+                <div class="alert alert-info">
+                    When debugging, always verify your dice rolls are in the valid range. A d20 should always be 1-20 before modifiers.
+                </div>
+
+                <h3>Tip 2: Recalculate Modifiers</h3>
+                <div class="alert alert-info">
+                    Don't hard-code modifiers! Calculate them from ability scores:
+                    <div class="example">
+                        <pre>strength_mod = (strength_score - 10) // 2
+attack = DiceRoller.roll_dice(1, 20, strength_mod)</pre>
+                    </div>
+                </div>
+
+                <h3>Tip 3: Advantage/Disadvantage Impact</h3>
+                <div class="alert alert-info">
+                    Advantage increases your average roll by ~4.5, disadvantage decreases it by ~4.5. This is significant!
+                </div>
+
+                <h3>Tip 4: Storing Results</h3>
+                <div class="alert alert-success">
+                    Store the full result dictionary, not just the total. You might need the individual rolls for logging or debugging.
+                    <div class="example">
+                        <pre>result = DiceRoller.roll_dice(3, 6, 2)
+log_entry = f"{result['notation']} = {result['rolls']} + {result['modifier']} = {result['total']}"
+print(log_entry)</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="../index.html">← Back to Home</a></li>
+                    <li><a href="character-system.html">Next: Character System →</a></li>
+                    <li><a href="combat-system.html">Combat System</a></li>
+                    <li><a href="spell-system.html">Spell System</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation | <a href="../README.md">Project README</a></p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Rules - D&D Bot Toolkit Documentation</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="../index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#components">Components</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>📖 Game Rules Component</h1>
+            <p>D&D rules reference, calculations, and lookup tables</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section>
+                <h2>Overview</h2>
+                <p>The Game Rules component provides D&D calculations and lookup tables including experience requirements, proficiency bonuses, class hit dice, and critical hit detection.</p>
+
+                <div class="alert alert-info">
+                    <strong>📖 What It Contains:</strong>
+                    <ul>
+                        <li>Experience point table for leveling</li>
+                        <li>Class-specific hit dice</li>
+                        <li>Proficiency bonus calculations</li>
+                        <li>Critical hit/miss detection</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Core Methods</h2>
+
+                <div class="method">
+                    <h4>get_proficiency_bonus(level)</h4>
+                    <p>Calculate proficiency bonus based on character level. Used in most attack and skill rolls.</p>
+                    
+                    <div class="method-signature">
+                        GameRules.get_proficiency_bonus(level: int) → int
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">level</span>
+                            <span class="param-type">int</span>
+                            <div class="param-desc">Character level (1-20)</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>int:</strong> Proficiency bonus
+                        <ul>
+                            <li>Levels 1-4: +2</li>
+                            <li>Levels 5-8: +3</li>
+                            <li>Levels 9-12: +4</li>
+                            <li>Levels 13-16: +5</li>
+                            <li>Levels 17-20: +6</li>
+                        </ul>
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>for level in [1, 5, 10, 15, 20]:
+    prof = GameRules.get_proficiency_bonus(level)
+    print(f"Level {level}: +{prof}")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Used In:</h4>
+                        <ul>
+                            <li><a href="combat-system.html">Combat System</a> - Added to attack rolls</li>
+                            <li><a href="character-system.html">Character System</a> - Stored in proficiency_bonus</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>get_xp_needed(current_level)</h4>
+                    <p>Get experience points needed to reach the next level.</p>
+                    
+                    <div class="method-signature">
+                        GameRules.get_xp_needed(current_level: int) → int
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>xp_for_level_2 = GameRules.get_xp_needed(1)  # 300
+xp_for_level_3 = GameRules.get_xp_needed(2)  # 900
+xp_for_level_5 = GameRules.get_xp_needed(4)  # 6500
+
+print(f"Need {xp_for_level_2} XP to reach level 2")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related:</h4>
+                        <ul>
+                            <li><a href="#experience_table">Experience Table</a> - Full XP requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>get_hit_die(char_class)</h4>
+                    <p>Get the hit die (damage die) for a character class. Determines HP gain per level.</p>
+                    
+                    <div class="method-signature">
+                        GameRules.get_hit_die(char_class: str) → int
+                    </div>
+
+                    <h4>Parameters:</h4>
+                    <div class="params">
+                        <div class="param">
+                            <span class="param-name">char_class</span>
+                            <span class="param-type">str</span>
+                            <div class="param-desc">Character class name (case-insensitive)</div>
+                        </div>
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>int:</strong> Number of sides on the hit die
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>hit_dice = {
+    "barbarian": GameRules.get_hit_die("Barbarian"),    # 12
+    "fighter": GameRules.get_hit_die("Fighter"),        # 10
+    "rogue": GameRules.get_hit_die("Rogue"),            # 8
+    "wizard": GameRules.get_hit_die("Wizard"),          # 6
+}
+
+for class_name, hit_die in hit_dice.items():
+    print(f"{class_name} uses d{hit_die}")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Related:</h4>
+                        <ul>
+                            <li><a href="dice-roller.html">Dice Roller</a> - Rolls the hit die for HP</li>
+                            <li><a href="#class_hit_dice">Class Hit Dice Table</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>is_critical_hit(d20_roll)</h4>
+                    <p>Check if a d20 roll is a critical hit (natural 20).</p>
+                    
+                    <div class="method-signature">
+                        GameRules.is_critical_hit(d20_roll: int) → bool
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>roll = 20
+if GameRules.is_critical_hit(roll):
+    print("Critical hit! Double damage!")
+    
+roll = 19
+if not GameRules.is_critical_hit(roll):
+    print("Not quite...")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>is_critical_miss(d20_roll)</h4>
+                    <p>Check if a d20 roll is a critical miss (natural 1).</p>
+                    
+                    <div class="method-signature">
+                        GameRules.is_critical_miss(d20_roll: int) → bool
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>roll = 1
+if GameRules.is_critical_miss(roll):
+    print("Critical failure! Oh no!")
+    
+roll = 2
+if not GameRules.is_critical_miss(roll):
+    print("Better luck next time")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>calculate_ac_from_dex_and_armor(base_ac, dex_modifier)</h4>
+                    <p>Calculate total AC from armor and dexterity modifier.</p>
+                    
+                    <div class="method-signature">
+                        GameRules.calculate_ac_from_dex_and_armor(base_ac: int, dex_modifier: int) → int
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre># Leather armor (base AC 11) with +3 DEX
+ac = GameRules.calculate_ac_from_dex_and_armor(11, 3)
+print(f"AC: {ac}")  # AC: 14
+
+# Heavy armor (base AC 17) - DEX doesn't apply fully
+ac = GameRules.calculate_ac_from_dex_and_armor(17, 3)
+print(f"AC: {ac}")  # AC: 17 (no DEX bonus)</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Reference Tables</h2>
+
+                <h3 id="experience_table">Experience Point Table</h3>
+                <p>Experience points required to reach each level from 1-10:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Experience Points</th>
+                            <th>XP for Next Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>300</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>300</td>
+                            <td>600</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>900</td>
+                            <td>1,800</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>2,700</td>
+                            <td>3,800</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>6,500</td>
+                            <td>7,500</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>14,000</td>
+                            <td>9,000</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>23,000</td>
+                            <td>11,000</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>34,000</td>
+                            <td>14,000</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>48,000</td>
+                            <td>16,000</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>64,000</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="class_hit_dice">Class Hit Dice</h3>
+                <p>Hit dice for each class (determines HP per level):</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Hit Die</th>
+                            <th>HP Example (Lvl 1)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Barbarian</td>
+                            <td>d12</td>
+                            <td>12 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Fighter</td>
+                            <td>d10</td>
+                            <td>10 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Ranger</td>
+                            <td>d10</td>
+                            <td>10 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Paladin</td>
+                            <td>d10</td>
+                            <td>10 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Bard</td>
+                            <td>d8</td>
+                            <td>8 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Cleric</td>
+                            <td>d8</td>
+                            <td>8 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Druid</td>
+                            <td>d8</td>
+                            <td>8 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Rogue</td>
+                            <td>d8</td>
+                            <td>8 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Sorcerer</td>
+                            <td>d6</td>
+                            <td>6 + CON mod</td>
+                        </tr>
+                        <tr>
+                            <td>Wizard</td>
+                            <td>d6</td>
+                            <td>6 + CON mod</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Proficiency Bonus by Level</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Levels</th>
+                            <th>Proficiency Bonus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1–4</td>
+                            <td>+2</td>
+                        </tr>
+                        <tr>
+                            <td>5–8</td>
+                            <td>+3</td>
+                        </tr>
+                        <tr>
+                            <td>9–12</td>
+                            <td>+4</td>
+                        </tr>
+                        <tr>
+                            <td>13–16</td>
+                            <td>+5</td>
+                        </tr>
+                        <tr>
+                            <td>17–20</td>
+                            <td>+6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Usage Examples</h2>
+
+                <h3>Example: Leveling Up</h3>
+                <div class="example">
+                    <pre>def level_up(character):
+    """Level up a character"""
+    character.level += 1
+    
+    # Update proficiency
+    character.proficiency_bonus = GameRules.get_proficiency_bonus(character.level)
+    
+    # Increase HP
+    hit_die = GameRules.get_hit_die(character.char_class)
+    new_hp = DiceRoller.roll_single_die(hit_die)
+    new_hp += character.get_ability_modifier("constitution")
+    character.max_hp += max(1, new_hp)
+    character.current_hp = character.max_hp
+    
+    return character
+
+# Usage
+hero = Character("Aragorn", "p1", "Fighter", level=1)
+hero = level_up(hero)
+print(f"Level up! Now level {hero.level} with {hero.max_hp} max HP")</pre>
+                </div>
+
+                <h3>Example: Check for Critical</h3>
+                <div class="example">
+                    <pre>def attack_with_crit(attacker, defender):
+    """Perform attack and check for critical"""
+    # Roll attack
+    d20 = DiceRoller.roll_single_die(20)
+    attack_roll = d20 + attacker.get_ability_modifier("strength")
+    
+    # Check for critical
+    if GameRules.is_critical_hit(d20):
+        print("CRITICAL HIT!")
+        # Double damage
+        damage = DiceRoller.roll_dice(2, 8, attacker.get_ability_modifier("strength"))
+    elif GameRules.is_critical_miss(d20):
+        print("CRITICAL FAILURE!")
+        return
+    elif attack_roll >= defender.armor_class:
+        damage = DiceRoller.roll_dice(1, 8, attacker.get_ability_modifier("strength"))
+    else:
+        print("Miss!")
+        return
+    
+    defender.take_damage(damage["total"])</pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Related Components</h2>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Character System</h3>
+                        <p>Uses game rules for character progression</p>
+                        <a href="character-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Combat System</h3>
+                        <p>Uses proficiency bonus in attacks</p>
+                        <a href="combat-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Dice Roller</h3>
+                        <p>Rolls according to game rules</p>
+                        <a href="dice-roller.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="../index.html">← Back to Home</a></li>
+                    <li><a href="database-system.html">← Database System</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>

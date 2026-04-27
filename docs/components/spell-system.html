@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spell System - D&D Bot Toolkit Documentation</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h1><a href="../index.html">🎲 D&D Bot Toolkit</a></h1>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#components">Components</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>✨ Spell System Component</h1>
+            <p>Manage spellcasting, spell slots, and daily limits</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section>
+                <h2>Overview</h2>
+                <p>The Spell System manages D&D spells including spell levels, damage, casting limits, and daily resets. Spells can be tracked by how many times they can be cast per day.</p>
+
+                <div class="alert alert-info">
+                    <strong>📖 Spell Types:</strong>
+                    <ul>
+                        <li><strong>Cantrips (Level 0):</strong> Unlimited casts per day</li>
+                        <li><strong>Leveled Spells:</strong> Limited by spell slots (fewer as level increases)</li>
+                        <li><strong>Casting Ability:</strong> Intelligence (Wizards), Wisdom (Clerics), Charisma (Warlocks)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Core Methods</h2>
+
+                <div class="method">
+                    <h4>__init__(name, spell_level, damage_dice=1, damage_die=6, description="")</h4>
+                    <p>Create a new spell with its properties.</p>
+                    
+                    <div class="method-signature">
+                        Spell(name: str, spell_level: int, damage_dice: int = 1, damage_die: int = 6, description: str = "")
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre># Fireball (3rd level spell, 8d6 damage)
+fireball = Spell("Fireball", 3, 8, 6, "Huge explosion of fire")
+
+# Magic Missile (1st level, 1d4 damage)
+missile = Spell("Magic Missile", 1, 1, 4, "Magical projectiles")
+
+# Fire Bolt (Cantrip, 1d10 damage)
+bolt = Spell("Fire Bolt", 0, 1, 10, "A bolt of fire")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>can_cast()</h4>
+                    <p>Check if the spell has uses remaining today.</p>
+                    
+                    <div class="method-signature">
+                        spell.can_cast() → bool
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>fireball = Spell("Fireball", 3, 8, 6)
+
+if fireball.can_cast():
+    # Cast the spell
+    fireball.cast()
+else:
+    print("Out of spell slots!")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>cast()</h4>
+                    <p>Use one spell slot/use and reduce uses remaining.</p>
+                    
+                    <div class="method-signature">
+                        spell.cast() → bool
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>bool:</strong> True if successfully cast, False if out of uses
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>fireball = Spell("Fireball", 3, 8, 6)
+print(f"Uses: {fireball.current_uses}/{fireball.uses_per_day}")  # Uses: 2/2
+
+# Cast once
+if fireball.cast():
+    print("Fireball cast!")
+    print(f"Uses: {fireball.current_uses}/{fireball.uses_per_day}")  # Uses: 1/2
+
+# Cast again
+if fireball.cast():
+    print("Fireball cast!")
+    print(f"Uses: {fireball.current_uses}/{fireball.uses_per_day}")  # Uses: 0/2
+
+# Try to cast without uses
+if not fireball.cast():
+    print("No more uses!")</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>reset_daily()</h4>
+                    <p>Reset spell uses for a new day (long rest).</p>
+                    
+                    <div class="method-signature">
+                        spell.reset_daily()
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>fireball = Spell("Fireball", 3, 8, 6)
+fireball.cast()
+fireball.cast()
+
+print(f"Before rest: {fireball.current_uses}/{fireball.uses_per_day}")  # 0/2
+
+# Long rest
+fireball.reset_daily()
+print(f"After rest: {fireball.current_uses}/{fireball.uses_per_day}")   # 2/2</pre>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h4>roll_damage()</h4>
+                    <p>Roll damage dice for the spell.</p>
+                    
+                    <div class="method-signature">
+                        spell.roll_damage() → int
+                    </div>
+
+                    <h4>Returns:</h4>
+                    <div class="returns">
+                        <strong>int:</strong> Total damage rolled
+                    </div>
+
+                    <div class="example">
+                        <h4>Example:</h4>
+                        <pre>fireball = Spell("Fireball", 3, 8, 6)
+
+# Roll damage (8d6)
+damage = fireball.roll_damage()
+print(f"Fireball damage: {damage}")</pre>
+                    </div>
+
+                    <div class="cross-ref">
+                        <h4>Uses:</h4>
+                        <ul>
+                            <li><a href="dice-roller.html">Dice Roller</a> - Rolls the damage dice</li>
+                            <li><a href="combat-system.html">Combat System</a> - In spell attacks</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Spell Properties</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>name</code></td>
+                            <td>str</td>
+                            <td>Spell name</td>
+                        </tr>
+                        <tr>
+                            <td><code>spell_level</code></td>
+                            <td>int</td>
+                            <td>Spell level (0-9, 0 is cantrip)</td>
+                        </tr>
+                        <tr>
+                            <td><code>damage_dice</code></td>
+                            <td>int</td>
+                            <td>Number of damage dice</td>
+                        </tr>
+                        <tr>
+                            <td><code>damage_die</code></td>
+                            <td>int</td>
+                            <td>Type of damage die (6 for d6, 8 for d8, etc.)</td>
+                        </tr>
+                        <tr>
+                            <td><code>uses_per_day</code></td>
+                            <td>int</td>
+                            <td>Daily use limit (unlimited for cantrips)</td>
+                        </tr>
+                        <tr>
+                            <td><code>current_uses</code></td>
+                            <td>int</td>
+                            <td>Uses remaining today</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Spell Database</h2>
+                <p>Pre-defined spells available in the SPELL_DATABASE dictionary:</p>
+                
+                <div class="alert alert-info">
+                    <strong>Example Spells:</strong>
+                    <ul>
+                        <li><strong>Fire Bolt:</strong> Cantrip, 1d10 damage</li>
+                        <li><strong>Magic Missile:</strong> 1st level, 1d4 damage</li>
+                        <li><strong>Fireball:</strong> 3rd level, 8d6 damage</li>
+                        <li><strong>Healing Word:</strong> 1st level, 1d4 healing</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <h4>Using Pre-defined Spells:</h4>
+                    <pre>from dnd_toolkit import SPELL_DATABASE
+
+# Get a pre-defined spell
+fire_bolt = SPELL_DATABASE["fire_bolt"]
+
+# Create your own spells
+custom_spell = Spell("Custom Spell", 2, 3, 6)</pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Complete Spellcasting Example</h2>
+                <div class="example">
+                    <h4>Wizard with Spells:</h4>
+                    <pre>from dnd_toolkit import Character, Spell
+
+# Create a wizard
+wizard = Character("Gandalf", "player1", "Wizard", level=5)
+wizard.abilities["intelligence"] = 18
+
+# Create and add spells
+fireball = Spell("Fireball", 3, 8, 6)
+magic_missile = Spell("Magic Missile", 1, 1, 4)
+fire_bolt = Spell("Fire Bolt", 0, 1, 10)  # Cantrip
+
+wizard.spells = [fireball, magic_missile, fire_bolt]
+
+# Cast spells
+print(f"Casting Fireball...")
+if wizard.spells[0].can_cast():
+    damage = wizard.spells[0].roll_damage()
+    wizard.spells[0].cast()
+    print(f"Damage: {damage}")
+    print(f"Uses left: {wizard.spells[0].current_uses}/{wizard.spells[0].uses_per_day}")
+
+# Cantrip has unlimited uses
+print(f"\nCasting Fire Bolt (cantrip)...")
+for i in range(5):
+    damage = fire_bolt.roll_damage()
+    fire_bolt.cast()
+    print(f"  Cast {i+1}: {damage} damage")
+
+print(f"Fire Bolt uses: {fire_bolt.current_uses}/{fire_bolt.uses_per_day}")</pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Related Components</h2>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Character System</h3>
+                        <p>Characters store known spells</p>
+                        <a href="character-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Combat System</h3>
+                        <p>Spells used in combat attacks</p>
+                        <a href="combat-system.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Dice Roller</h3>
+                        <p>Rolls damage for spells</p>
+                        <a href="dice-roller.html">View Documentation →</a>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Game Rules</h3>
+                        <p>Spellcasting rules and modifiers</p>
+                        <a href="game-rules.html">View Documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="../index.html">← Back to Home</a></li>
+                    <li><a href="combat-system.html">← Combat System</a></li>
+                    <li><a href="database-system.html">Next: Database System →</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 D&D Bot Toolkit Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>
