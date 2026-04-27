@@ -479,20 +479,21 @@ li {
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary: #1a1a1a;
-        --secondary: #4a9eff;
-        --accent: #ff6b6b;
-        --success: #51cf66;
-        --bg-light: #2d2d2d;
-        --bg-white: #1e1e1e;
-        --text-dark: #f0f0f0;
-        --text-light: #b0b0b0;
-        --border: #404040;
-        --shadow: 0 2px 8px rgba(0,0,0,0.3);
+        --primary: #0d1117;
+        --secondary: #58a6ff;
+        --accent: #ff7b72;
+        --success: #3fb950;
+        --bg-light: #161b22;
+        --bg-white: #0d1117;
+        --text-dark: #e6edf3;
+        --text-light: #8b949e;
+        --border: #30363d;
+        --shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
     body {
         background-color: var(--bg-light);
+        color: var(--text-dark);
     }
 
     .component-grid {
@@ -500,47 +501,116 @@ li {
     }
 
     .cross-ref {
-        background: #404020;
-        color: #f0f0f0;
+        background: #30363d;
+        color: #e6edf3;
+        border-left-color: #58a6ff;
     }
 
     .cross-ref h4 {
-        color: #ffd700;
+        color: #58a6ff;
     }
 
     .returns {
-        background: #204020;
-        color: #f0f0f0;
+        background: #161b22;
+        color: #e6edf3;
+        border-left-color: #3fb950;
     }
 
     .alert-info {
-        background: #1a3a3a;
-        color: #6dd5ff;
+        background: #0d3b66;
+        color: #79c0ff;
+        border-color: #1f6feb;
     }
 
     .alert-warning {
-        background: #3a3a1a;
-        color: #ffdd66;
+        background: #663c00;
+        color: #ffd478;
+        border-color: #d29922;
     }
 
     .alert-success {
-        background: #1a3a1a;
-        color: #66ff66;
+        background: #0d3d1a;
+        color: #56d364;
+        border-color: #238636;
     }
 
     code {
-        background: rgba(255, 255, 255, 0.1);
-        color: #4a9eff;
+        background: rgba(110, 118, 129, 0.4);
+        color: #79c0ff;
     }
 
     pre {
-        background: #2d2d2d;
-        color: #f0f0f0;
+        background: #0d1117;
+        color: #e6edf3;
     }
 
     .method-signature {
-        background: #2d2d2d;
-        color: #4a9eff;
+        background: #161b22;
+        color: #79c0ff;
+        border: 1px solid #30363d;
+    }
+
+    .example {
+        background: #0d1117;
+        color: #e6edf3;
+        border: 1px solid #30363d;
+    }
+
+    .component-card {
+        background: #161b22;
+        border-left-color: #58a6ff;
+    }
+
+    .method {
+        background: #161b22;
+        border-left-color: #3fb950;
+    }
+
+    header {
+        background: #0d1117;
+        border-bottom-color: #58a6ff;
+        color: var(--text-dark);
+    }
+
+    main {
+        background: #0d1117;
+        color: var(--text-dark);
+    }
+
+    section {
+        color: var(--text-dark);
+    }
+
+    table {
+        background: #161b22;
+        color: var(--text-dark);
+    }
+
+    th {
+        background: #0d1117;
+        color: #58a6ff;
+        border-bottom-color: #30363d;
+    }
+
+    td {
+        border-bottom-color: #30363d;
+    }
+
+    tr:hover {
+        background: #161b22;
+    }
+
+    .sidebar {
+        background: #161b22;
+        color: var(--text-dark);
+    }
+
+    .sidebar a {
+        color: #58a6ff;
+    }
+
+    .sidebar a:hover {
+        color: #ff7b72;
     }
 }
 
